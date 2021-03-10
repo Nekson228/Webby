@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="" method="post" novalidate>
+    <div>
+        {{ form.csrf_token }}
+    </div>
+    <div class="message_input_box">
+        {{ form.message_field(class="message-field", placeholder="Сообщение") }}
+        {{ form.send_field() }}
+    </div>
+</form>
+{% endblock %}
