@@ -1,3 +1,38 @@
+.logo {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 150px;
+}
+h1 {
+    line-height: 20px;
+}
+.nekit {
+    color: blue;
+}
+.chats {
+    color: yellow;
+}
+div {
+    margin: 10px;
+}
+form {
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: max-content;
+}
+.submit_button {
+    width: 100%;
+}
+.profile-data {
+    float: left;
+}
+.login-data {
+    float: right;
+}
 .message-field {
     background-color: lavender;
     border-radius: 15px;

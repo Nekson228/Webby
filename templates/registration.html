@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+
+{% block content %}
+{% set login_data = ['email_field', 'password_field', 'confirm_password_field'] %}
+<form method="post" novalidate>
+    <div class >
+        <div>
+            {{ form.csrf_token }}
+        </div>
+        <div class="profile-data">
+            <h3>Информация о вас:</h3>
+            <div>
+                {{ form.csrf_token }}
+            </div>
+            {% for field in form if field.name != 'csrf_token' and field.name not in login_data and field.name != 'submit_field'%}
+                <div>
+                    {{ field.label() }}
+                    <br>
+                    {{ field() }}
+                    {% for error in field.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="login-data">
+            <h3>Данные для входа:</h3>
+            {% for field in form if field.name != 'csrf_token' and field.name in login_data and field.name != 'submit_field'%}
+                <div>
+                    {{ field.label() }}
+                    <br>
+                    {{ field() }}
+                    {% for error in field.errors %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {{ form.submit_field(class="submit_button") }}
+</form>
+{% endblock %}
