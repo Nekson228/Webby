@@ -6,6 +6,18 @@
     margin-bottom: 10px;
     max-width: 150px;
 }
+header {
+    overflow: hidden;
+    background-color: aliceblue;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.btn .login {
+
+}
+header .btn {
+    float: right;
+}
 h1 {
     line-height: 20px;
 }

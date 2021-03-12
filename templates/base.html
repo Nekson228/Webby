@@ -9,10 +9,14 @@
     crossorigin="anonymous">
 </head>
 <body>
-<div class="logo">
-    <h1 class="nekit">Некит</h1>
-    <h1 class="chats">Чаты</h1>
-</div>
+<header>
+    <a class="btn btn-outline-dark register" href="/register">Зарегистрироваться</a>
+    <a class="btn btn-outline-dark login" href="/login">Логин</a>
+    <div class="logo">
+        <h1 class="nekit">Некит</h1>
+        <h1 class="chats">Чаты</h1>
+    </div>
+</header>
 <main role="main" class="container">
     {% block content %}{% endblock %}
 </main>
