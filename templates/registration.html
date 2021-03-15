@@ -2,11 +2,12 @@
 
 {% block content %}
 {% set login_data = ['email_field', 'password_field', 'confirm_password_field'] %}
+{% set message_space = namespace(message='') %}
 <form method="post" novalidate>
-    <div class >
-        <div>
-            {{ form.csrf_token }}
-        </div>
+    <div>
+        {{ form.csrf_token }}
+    </div>
+    <div class="float_container">
         <div class="profile-data">
             <h3>Информация о вас:</h3>
             <div>
@@ -16,27 +17,32 @@
                 <div>
                     {{ field.label() }}
                     <br>
-                    {{ field() }}
-                    {% for error in field.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
+                    {% if field.errors %}
+                        {{ field(class="error_field") }}
+                        {% set message_space.message = field.errors[0] %}
+                    {% else %}
+                        {{ field(class="normal_field") }}
+                    {% endif %}
                 </div>
             {% endfor %}
-        </div>
-        <div class="login-data">
-            <h3>Данные для входа:</h3>
-            {% for field in form if field.name != 'csrf_token' and field.name in login_data and field.name != 'submit_field'%}
-                <div>
-                    {{ field.label() }}
-                    <br>
-                    {{ field() }}
-                    {% for error in field.errors %}
-                        <div class="error">{{ error }}</div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
     </div>
-    {{ form.submit_field(class="submit_button") }}
+    <div class="login-data">
+        <h3>Данные для входа:</h3>
+        {% for field in form if field.name != 'csrf_token' and field.name in login_data and field.name != 'submit_field'%}
+            <div>
+                {{ field.label() }}
+                <br>
+                {% if field.errors %}
+                    {{ field(class="error_field") }}
+                    {% set message_space.message = field.errors[0] %}
+                {% else %}
+                    {{ field(class="normal_field") }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+    <div class="message">{{ message_space.message }}</div>
+    {{ form.submit_field(class="submit-button btn btn-outline-info") }}
 </form>
 {% endblock %}

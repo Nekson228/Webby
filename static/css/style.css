@@ -1,3 +1,6 @@
+body {
+    background-color: aliceblue !important;
+}
 .logo {
     text-align: center;
     margin-left: auto;
@@ -5,6 +8,12 @@
     margin-top: 10px;
     margin-bottom: 10px;
     max-width: 150px;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 20px;
+}
+a {
+    text-decoration: none !important;
 }
 header {
     overflow: hidden;
@@ -12,14 +21,11 @@ header {
     margin-bottom: 10px;
     padding: 10px;
 }
-.btn .login {
-
+.login {
+    margin-right: 10px;
 }
 header .btn {
     float: right;
-}
-h1 {
-    line-height: 20px;
 }
 .nekit {
     color: blue;
@@ -27,16 +33,34 @@ h1 {
 .chats {
     color: yellow;
 }
+.user_brand {
+    float: right;
+    text-decoration: none;
+    color: lightslategray;
+}
 div {
     margin: 10px;
 }
 form {
-    overflow: hidden;
     margin-left: auto;
     margin-right: auto;
     max-width: max-content;
+    background-color: white;
+    border: solid 2px aliceblue;
+    border-radius: 25px;
+    padding: 10px;
 }
-.submit_button {
+.float_container {
+    overflow: hidden
+}
+.error_field {
+    border: red solid 1px;
+}
+.message {
+    color: red;
+    font: small-caption;
+}
+.submit-button {
     width: 100%;
 }
 .profile-data {
