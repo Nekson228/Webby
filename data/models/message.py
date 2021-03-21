@@ -14,5 +14,5 @@ class Message(SqlAlchemyBase):
     content_id = Column(Integer, ForeignKey("contents.id"))
     created_at = Column(DateTime, default=datetime.now())
     sender = relationship("User", foreign_keys=[from_id])
-    reciever = relationship("User", foreign_keys=[to_id])
+    receiver = relationship("User", foreign_keys=[to_id])
     content = relationship("Content")

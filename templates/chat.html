@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 <form method="post" novalidate>
@@ -7,7 +7,7 @@
     </div>
     {% for msg in messages %}
         <div class="shadow p-3 mb-5 bg-white rounded">
-            {{ msg.sender.name }} {{ msg.sender.surname }} to {{ msg.reciever.name }} {{ msg.reciever.surname }}
+            {{ msg.sender.name }} {{ msg.sender.surname }} to {{ msg.receiver.name }} {{ msg.receiver.surname }}
             at {{ msg.created_at }}: {{ msg.content.content }}
         </div>
     {% endfor %}
