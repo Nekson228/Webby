@@ -78,6 +78,28 @@ def send():
     return render_template('send.html', form=form)
 
 
+@app.route('/conversation/<int:user_id>', methods=['POST', 'GET'])
+@login_required
+def chat(user_id):
+    form = MessageForm()
+    session = create_session()
+    messages = session.query(Message).filter(((Message.to_id == current_user.id) & (Message.from_id == user_id)) |
+                                             ((Message.from_id == current_user.id) & (Message.to_id == user_id)))
+    if form.validate_on_submit():
+        session = create_session()
+        msg, cnt = Message(), Content()
+        cnt.content = form.message_field.data
+        session.add(cnt)
+        session.commit()
+        msg.to_id = user_id
+        msg.from_id = current_user.id
+        msg.content_id = cnt.id
+        session.add(msg)
+        session.commit()
+        return redirect(f"/conversation/{user_id}")
+    return render_template('chat.html', form=form, messages=messages)
+
+
 if __name__ == '__main__':
     global_init('db/chats_db.sqlite')
     app.run('127.0.0.1', 8080, debug=True)
