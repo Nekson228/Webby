@@ -1,11 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>
-    Добро пожаловать на НекитЧаты
-</h2>
+<h2>Добро пожаловать на НекитЧаты</h2>
 {% if not current_user.is_authenticated %}
-<p>Для того чтобы начать работать войдите или зарегистрируйтесь (если вы этого еще не сделали).</p>
+<b>Для того чтобы начать работать войдите или зарегистрируйтесь (если вы этого еще не сделали).</b>
+{% else %}
+<b>Чтобы написать кому-нибудь введите его номер телефона в поле для поиска</b>
+<form method="post" novalidate class="right_float">
+    <div>
+        {{ form.csrf_token }}
+    </div>
+    <div class="number_input_box">
+        {{ form.number_field(placeholder="Номер телефона") }}
+        {{ form.search_field() }}
+    </div>
+    {% if user is defined %}
+        <div class="found_user">
+            <a href="/conversation/{{ user.id }}">{{ user.name }} {{ user.surname }}</a>
+        </div>
+    {% endif %}
+    {% if message is defined %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+</form>
 {% endif %}
 <p>Сейчас вы можете:</p>
 <ul>

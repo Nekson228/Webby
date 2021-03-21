@@ -11,10 +11,10 @@
 <body>
 <header>
     {% if current_user.is_authenticated %}
-        <a class="user_brand" href="logout">{{ current_user.name }} {{ current_user.surname }}</a>
+        <a class="user_brand right_float" href="logout">{{ current_user.name }} {{ current_user.surname }}</a>
     {% else %}
-        <a class="btn btn-outline-dark register" href="/register">Зарегистрироваться</a>
-        <a class="btn btn-outline-dark login" href="/login">Войти</a>
+        <a class="btn btn-outline-dark register right_float" href="/register">Зарегистрироваться</a>
+        <a class="btn btn-outline-dark login right_float" href="/login">Войти</a>
     {% endif %}
     <div class="logo">
         <a href="/">
@@ -23,7 +23,7 @@
         </a>
     </div>
 </header>
-<main role="main" class="container">
+<main role="main" class="container float_container">
     {% block content %}{% endblock %}
 </main>
 </body>

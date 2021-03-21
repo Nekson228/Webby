@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 
 REQ_MESSAGE = 'Не все поля заполнены'
 PSW_LEN_MESSAGE = 'Пароль должен содеражть не менее 8 символов'
-PSW_EQUAL_MESSAGE = 'Пароли должны совадать'
+PSW_EQUAL_MESSAGE = 'Пароли должны совпадать'
 
 
 class LoginForm(FlaskForm):
@@ -27,6 +27,11 @@ class RegistrationForm(FlaskForm):
     confirm_password_field = PasswordField('Подтвердите пароль: ',
                                            validators=[EqualTo('password_field', PSW_EQUAL_MESSAGE)])
     submit_field = SubmitField('Регистрация')
+
+
+class SearchForm(FlaskForm):
+    number_field = StringField()
+    search_field = SubmitField('Искать')
 
 
 class MessageForm(FlaskForm):

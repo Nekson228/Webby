@@ -24,9 +24,6 @@ header {
 .login {
     margin-right: 10px;
 }
-header .btn {
-    float: right;
-}
 .nekit {
     color: blue;
 }
@@ -34,7 +31,6 @@ header .btn {
     color: yellow;
 }
 .user_brand {
-    float: right;
     text-decoration: none;
     color: lightslategray;
 }
@@ -63,15 +59,15 @@ form {
 .submit-button {
     width: 100%;
 }
-.profile-data {
-    float: left;
-}
-.login-data {
-    float: right;
-}
 .message-field {
     background-color: lavender;
     border-radius: 15px;
     border-color: lavender;
     outline: none
+}
+.right_float {
+    float: right;
+}
+.left_float {
+    float: left;
 }

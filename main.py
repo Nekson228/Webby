@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, logout_user, login_required
-from data.forms import *
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
-from data import db_session
+from data.forms import *
+from data.db_session import create_session, global_init
 from data.__all_models import *
 
 app = Flask(__name__)
@@ -12,14 +12,23 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if current_user.is_authenticated:
+        form = SearchForm()
+        if form.validate_on_submit():
+            session = create_session()
+            user = session.query(User).filter(User.phone_number == form.number_field.data).first()
+            if not user:
+                return render_template('index.html', form=form, message='Пользователь не найден')
+            return render_template('index.html', form=form, user=user)
+        return render_template('index.html', form=form)
     return render_template('index.html')
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    session = db_session.create_session()
+    session = create_session()
     return session.query(User).get(user_id)
 
 
@@ -27,7 +36,7 @@ def load_user(user_id):
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        session = db_session.create_session()
+        session = create_session()
         user = User()
         user.name = form.name_field.data
         user.surname = form.surname_field.data
@@ -45,7 +54,7 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        session = db_session.create_session()
+        session = create_session()
         user = session.query(User).filter(User.email == form.email_field.data).first()
         if user and user.check_password(form.password_field.data):
             login_user(user, remember=form.remember_me.data)
@@ -70,5 +79,5 @@ def send():
 
 
 if __name__ == '__main__':
-    db_session.global_init('db/chats_db.sqlite')
+    global_init('db/chats_db.sqlite')
     app.run('127.0.0.1', 8080, debug=True)

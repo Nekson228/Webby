@@ -8,7 +8,7 @@
         {{ form.csrf_token }}
     </div>
     <div class="float_container">
-        <div class="profile-data">
+        <div class="profile-data left_float">
             <h3>Информация о вас:</h3>
             <div>
                 {{ form.csrf_token }}
@@ -26,7 +26,7 @@
                 </div>
             {% endfor %}
     </div>
-    <div class="login-data">
+    <div class="login-data right_float">
         <h3>Данные для входа:</h3>
         {% for field in form if field.name != 'csrf_token' and field.name in login_data and field.name != 'submit_field'%}
             <div>

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../Flask4/.idea/Flask4.iml" filepath="$PROJECT_DIR$/../Flask4/.idea/Flask4.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/WEB Project.iml" filepath="$PROJECT_DIR$/.idea/WEB Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../flask-messenger-master/.idea/flask-messenger-master.iml" filepath="$PROJECT_DIR$/../flask-messenger-master/.idea/flask-messenger-master.iml" />
     </modules>
   </component>
 </project>
