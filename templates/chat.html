@@ -1,19 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="post" novalidate>
+<form class="float_container w-75" method="post" novalidate>
     <div>
-        {{ form.csrf_token }}
-    </div>
-    {% for msg in messages %}
-        <div class="shadow p-3 mb-5 bg-white rounded">
-            {{ msg.sender.name }} {{ msg.sender.surname }} to {{ msg.receiver.name }} {{ msg.receiver.surname }}
-            at {{ msg.created_at }}: {{ msg.content.content }}
+        <div>
+            {{ form.csrf_token }}
         </div>
-    {% endfor %}
-    <div class="message_input_box">
-        {{ form.message_field(class="message-field", placeholder="Напишите сообщение...") }}
-        {{ form.send_field() }}
+        <div class="border-bottom">
+            <h3>{{ companion.name }} {{ companion.surname }}</h3>
+        </div>
+        {% for msg in messages %}
+            <div>
+                <span>{{ msg.sender.name }} {{ msg.sender.surname }}</span>
+                <span>{{ msg.created_at.hour }}:{{ msg.created_at.minute }}:{{ msg.created_at.second }}</span>
+                <br>{{ msg.content.content }}
+            </div>
+        {% endfor %}
+        <div class="message_input_box" id="page-bottom">
+            {{ form.message_field(class="message-field w-75", placeholder="Напишите сообщение...") }}
+            {{ form.send_field() }}
+        </div>
     </div>
 </form>
 {% endblock %}

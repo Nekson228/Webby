@@ -6,7 +6,7 @@
 <b>Для того чтобы начать работать войдите или зарегистрируйтесь (если вы этого еще не сделали).</b>
 {% else %}
 <b>Чтобы написать кому-нибудь введите его номер телефона в поле для поиска</b>
-<form method="post" novalidate class="right_float">
+<form method="post" novalidate class="float-end">
     <div>
         {{ form.csrf_token }}
     </div>
@@ -16,7 +16,7 @@
     </div>
     {% if user is defined %}
         <div class="found_user">
-            <a href="/conversation/{{ user.id }}">{{ user.name }} {{ user.surname }}</a>
+            <a href="/conversation/{{ user.id }}#page-bottom">{{ user.name }} {{ user.surname }}</a>
         </div>
     {% endif %}
     {% if message is defined %}

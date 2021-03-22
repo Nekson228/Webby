@@ -17,7 +17,7 @@ class User(SqlAlchemyBase, UserMixin):
     email = Column(String, unique=True)
     phone_number = Column(String, unique=True)
     hashed_password = Column(String)
-    registration_time = Column(DateTime, default=datetime.now())
+    registration_time = Column(DateTime, default=datetime.now)
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

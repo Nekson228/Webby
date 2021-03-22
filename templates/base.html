@@ -11,10 +11,10 @@
 <body>
 <header>
     {% if current_user.is_authenticated %}
-        <a class="user_brand right_float" href="logout">{{ current_user.name }} {{ current_user.surname }}</a>
+        <a class="user_brand float-end" href="/logout">{{ current_user.name }} {{ current_user.surname }}</a>
     {% else %}
-        <a class="btn btn-outline-dark register right_float" href="/register">Зарегистрироваться</a>
-        <a class="btn btn-outline-dark login right_float" href="/login">Войти</a>
+        <a class="btn btn-outline-dark register float-end" href="/register">Зарегистрироваться</a>
+        <a class="btn btn-outline-dark login float-end" href="/login">Войти</a>
     {% endif %}
     <div class="logo">
         <a href="/">

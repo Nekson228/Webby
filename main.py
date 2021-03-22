@@ -70,23 +70,15 @@ def logout():
     return redirect('/')
 
 
-@app.route('/send', methods=['POST', 'GET'])
-def send():
-    form = MessageForm()
-    if form.validate_on_submit():
-        pass
-    return render_template('send.html', form=form)
-
-
 @app.route('/conversation/<int:user_id>', methods=['POST', 'GET'])
 @login_required
-def chat(user_id):
+def conversation(user_id):
     form = MessageForm()
     session = create_session()
     messages = session.query(Message).filter(((Message.to_id == current_user.id) & (Message.from_id == user_id)) |
                                              ((Message.from_id == current_user.id) & (Message.to_id == user_id)))
+    companion = session.query(User).filter(User.id == user_id).first()
     if form.validate_on_submit():
-        session = create_session()
         msg, cnt = Message(), Content()
         cnt.content = form.message_field.data
         session.add(cnt)
@@ -97,7 +89,7 @@ def chat(user_id):
         session.add(msg)
         session.commit()
         return redirect(f"/conversation/{user_id}")
-    return render_template('chat.html', form=form, messages=messages)
+    return render_template('chat.html', form=form, messages=messages, companion=companion)
 
 
 if __name__ == '__main__':
