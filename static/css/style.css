@@ -46,9 +46,6 @@ form {
     border-radius: 25px;
     padding: 10px;
 }
-.float_container {
-    overflow: hidden
-}
 .error_field {
     border: red solid 1px;
 }
@@ -64,10 +61,4 @@ form {
     border-radius: 15px;
     border-color: lavender;
     outline: none
-}
-.right_float {
-    float: right;
-}
-.left_float {
-    float: left;
 }

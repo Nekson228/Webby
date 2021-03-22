@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form class="float_container w-75" method="post" novalidate>
+<form class="clearfix w-75" method="post" novalidate>
     <div>
         <div>
             {{ form.csrf_token }}
@@ -11,9 +11,23 @@
         </div>
         {% for msg in messages %}
             <div>
-                <span>{{ msg.sender.name }} {{ msg.sender.surname }}</span>
-                <span>{{ msg.created_at.hour }}:{{ msg.created_at.minute }}:{{ msg.created_at.second }}</span>
-                <br>{{ msg.content.content }}
+                {% if loop.previtem is defined %}
+                    {% if (loop.previtem.created_at.day != msg.created_at.day) or (loop.previtem.created_at.month != msg.created_at.month)
+                    or (loop.previtem.created_at.year != msg.created_at.year) %}
+                        <div class="text-center">{{ msg.created_at.year }}-{{ msg.created_at.month }}-{{ msg.created_at.day }}</div>
+                    {% endif %}
+                    {% if loop.previtem.sender != msg.sender or loop.previtem.created_at.minute != msg.created_at.minute %}
+                        <b>{{ msg.sender.name }} {{ msg.sender.surname }}</b>
+                        <span class="text-secondary">{{ msg.created_at.hour }}:{{ msg.created_at.minute }}</span>
+                        <br>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center">{{ msg.created_at.year }}-{{ msg.created_at.month }}-{{ msg.created_at.day }}</div>
+                    <b>{{ msg.sender.name }} {{ msg.sender.surname }}</b>
+                    <span class="text-secondary">{{ msg.created_at.hour }}:{{ msg.created_at.minute }}</span>
+                    <br>
+                {% endif %}
+                {{ msg.content.content }}
             </div>
         {% endfor %}
         <div class="message_input_box" id="page-bottom">
