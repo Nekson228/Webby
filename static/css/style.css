@@ -62,3 +62,7 @@ form {
     border-color: lavender;
     outline: none
 }
+.profile-pic {
+    width: 25%;
+    height: 25%;
+}

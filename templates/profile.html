@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-block">
+    <img src={{ pic }} class="profile-pic rounded float-start" alt="Упс! Аватарка не найдена!">
+    <h3 class="float-start">{{ user.name }} {{ user.surname }}</h3>
+    {% if user.id == current_user.id %}
+        <a class="btn btn-outline-dark register float-start" href="/profile/avatar/{{ current_user.id }}">
+            Сменить аватарку
+        </a>
+    {% else %}
+        <a class="btn btn-outline-dark register float-start" href="/conversation/{{ user.id }}">Написать пользователю</a>
+    {% endif %}
+</div>
+{% endblock %}

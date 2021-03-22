@@ -16,7 +16,7 @@
     </div>
     {% if user is defined %}
         <div class="found_user">
-            <a href="/conversation/{{ user.id }}#page-bottom">{{ user.name }} {{ user.surname }}</a>
+            <a href="/profile/{{ user.id }}#page-bottom">{{ user.name }} {{ user.surname }}</a>
         </div>
     {% endif %}
     {% if message is defined %}
@@ -35,7 +35,7 @@
     <ul>
         <li>Статистику</li>
         <li>Интересы</li>
-        <li>Аватар</li>
+        <li class="text-decoration-line-through">Аватар</li>
     </ul>
     <li>(ОПАСНО) Научиться отправлять медиа-контент</li>
     <li>Создать разделы с информацией</li>

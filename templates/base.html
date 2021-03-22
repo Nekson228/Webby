@@ -11,6 +11,7 @@
 <body>
 <header>
     {% if current_user.is_authenticated %}
+        <a class="btn btn-outline-dark profile float-end" href="/profile/{{ current_user.id }}">Профиль</a>
         <a class="user_brand float-end" href="/logout">{{ current_user.name }} {{ current_user.surname }}</a>
     {% else %}
         <a class="btn btn-outline-dark register float-end" href="/register">Зарегистрироваться</a>

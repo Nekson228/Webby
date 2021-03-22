@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 align="center">Настройка аватара</h2>
+<form class="float_container w-75" method="post" enctype="multipart/form-data" novalidate>
+    <div>
+        <div>
+            {{ form.csrf_token }}
+        </div>
+        <div class="message_input_box">
+            {{ form.link_field() }}
+            {{ form.confirm_field() }}
+            {% for error in form.link_field.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+{% endblock %}

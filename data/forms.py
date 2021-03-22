@@ -1,4 +1,5 @@
-from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField
+from flask_wtf.file import FileRequired, FileAllowed
+from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField, FileField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, EqualTo, Length
 from flask_wtf import FlaskForm
@@ -6,6 +7,7 @@ from flask_wtf import FlaskForm
 REQ_MESSAGE = 'Не все поля заполнены'
 PSW_LEN_MESSAGE = 'Пароль должен содеражть не менее 8 символов'
 PSW_EQUAL_MESSAGE = 'Пароли должны совпадать'
+SUPPORTED_IMG_FORMATS = ['jpg', 'png']
 
 
 class LoginForm(FlaskForm):
@@ -37,3 +39,12 @@ class SearchForm(FlaskForm):
 class MessageForm(FlaskForm):
     message_field = StringField()
     send_field = SubmitField('Отправить')
+
+
+class AvatarForm(FlaskForm):
+    link_field = FileField(f"Прикрепите файл с изображением в одном из возиожных "
+                           f"форматов: {', '.join(SUPPORTED_IMG_FORMATS)}",
+                           validators=[FileRequired(), FileAllowed(SUPPORTED_IMG_FORMATS,
+                                                                   f"Неверный формат. Доступные форматы: "
+                                                                   f"{', '.join(SUPPORTED_IMG_FORMATS)}")])
+    confirm_field = SubmitField('Установить')
