@@ -100,12 +100,26 @@ def conversation(user_id):
 def show_profile(user_id):
     session = create_session()
     user = session.query(User).filter(User.id == user_id).first()
+    messages = session.query(Message).filter(Message.from_id == user_id).all()
+    rating = 0
+    for i in messages:
+        content = session.query(Content).filter(i.content_id == Content.id).first()
+        if len(content.content) < 50:
+            rating += 1
+        elif 50 <= len(content.content) < 100:
+            rating += 2
+        elif 100 <= len(content.content) < 250:
+            rating += 3
+        elif 250 <= len(content.content) < 500:
+            rating += 5
+        elif 500 <= len(content.content):
+            rating += 10
     pic = session.query(Avatar).filter(Avatar.refers_to == user_id).first()
     if pic:
         profile_pic = url_for('static', filename=f"avatars/{pic.link}")
     else:
         profile_pic = url_for('static', filename='avatars/anon.png')
-    return render_template('profile.html', user=user, pic=profile_pic)
+    return render_template('profile.html', user=user, pic=profile_pic, rating=rating)
 
 
 @app.route('/profile/avatar/<int:user_id>', methods=['GET', 'POST'])

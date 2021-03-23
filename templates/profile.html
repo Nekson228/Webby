@@ -1,15 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="profile-block">
-    <img src={{ pic }} class="profile-pic rounded float-start" alt="Упс! Аватарка не найдена!">
-    <h3 class="float-start">{{ user.name }} {{ user.surname }}</h3>
-    {% if user.id == current_user.id %}
-        <a class="btn btn-outline-dark register float-start" href="/profile/avatar/{{ current_user.id }}">
-            Сменить аватарку
-        </a>
-    {% else %}
-        <a class="btn btn-outline-dark register float-start" href="/conversation/{{ user.id }}">Написать пользователю</a>
-    {% endif %}
-</div>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <img src={{ pic }} class="profile-pic rounded float-start w-25 h-25" alt="Упс! Аватарка не найдена!">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h2>О пользователе</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h3>День рождения</h3>
+                </div>
+                <div class="col">
+                    <h3>Дата регистрации</h3>
+                </div>
+                <div class="col">
+                    <h3>Баллы активности</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <b>{{ user.birthday.year }}-{{ user.birthday.month }}-{{ user.birthday.day }}</b>
+                </div>
+                <div class="col">
+                    <b>{{ user.registration_time.year }}-{{ user.registration_time.month }}-{{ user.registration_time.day }}</b>
+                </div>
+                <div class="col">
+                    <b>{{ rating }}</b>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <h3 class="float-start">{{ user.name }} {{ user.surname }}</h3>
+    </li>
+    <li class="list-group-item">
+        {% if user.id == current_user.id %}
+            <a class="btn btn-outline-dark register float-start" href="/profile/avatar/{{ current_user.id }}">
+                Сменить аватарку
+            </a>
+        {% else %}
+            <a class="btn btn-outline-dark register float-start" href="/conversation/{{ user.id }}">
+                Написать пользователю
+            </a>
+        {% endif %}
+    </li>
+</ul>
 {% endblock %}

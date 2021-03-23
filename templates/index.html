@@ -16,7 +16,15 @@
     </div>
     {% if user is defined %}
         <div class="found_user">
-            <a href="/profile/{{ user.id }}#page-bottom">{{ user.name }} {{ user.surname }}</a>
+            <div class="dropdown">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ user.name }} {{ user.surname }}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/profile/{{ user.id }}">Профиль</a>
+                    <a class="dropdown-item" href="/conversation/{{ user.id }}">Перейти к разговору</a>
+                </div>
+            </div>
         </div>
     {% endif %}
     {% if message is defined %}
@@ -33,7 +41,7 @@
 <ol>
     <li>Сделать профиль пользователя, включающий:</li>
     <ul>
-        <li>Статистику</li>
+        <li class="text-decoration-line-through">Статистику</li>
         <li>Интересы</li>
         <li class="text-decoration-line-through">Аватар</li>
     </ul>
