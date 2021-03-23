@@ -4,18 +4,22 @@
 <form class="clearfix">
     <div class="clearfix">
         <h3 class="border-bottom">{{ user.name }} {{ user.surname }}</h3>
-        <img src="{{ pic }}" class="profile-pic rounded-top w-25 h-25 float-start" alt="Упс! Аватарка не найдена!">
-        <div class="float-start">
-            <h3>О пользователе:</h3>
-            <p>День рождения: <b>{{ user.birthday.year }}-{{ user.birthday.month }}-{{ user.birthday.day }}</b></p>
-            <p>Дата регистрации: <b>{{ user.registration_time.year }}-{{ user.registration_time.month }}-{{ user.registration_time.day }}</b></p>
-            <p>Баллы активности: <b>{{ rating }}</b></p>
+        <div class="clearfix">
+            <img src="{{ pic }}" class="profile-pic rounded-top w-25 h-25 float-start" alt="Упс! Аватарка не найдена!">
+            <div class="float-start">
+                <h3>О пользователе:</h3>
+                <p>День рождения: <b>{{ user.birthday.year }}-{{ user.birthday.month }}-{{ user.birthday.day }}</b></p>
+                <p>Дата регистрации: <b>{{ user.registration_time.year }}-{{ user.registration_time.month }}-{{ user.registration_time.day }}</b></p>
+                <p>Баллы активности: <b>{{ rating }}</b></p>
+            </div>
         </div>
+        <div>
             {% if user.id == current_user.id %}
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/avatar/{{ current_user.id }}">Сменить аватарку</a>
             {% else %}
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversation/{{ user.id }}#page-bottom">Написать сообщение</a>
             {% endif %}
+        </div>
     </div>
 </form>
 {% endblock %}
