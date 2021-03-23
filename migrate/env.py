@@ -20,7 +20,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-sys.path.insert(0, 'C:/Users/Первый/Desktop/LMS/WEB Project')
+sys.path.insert(0, 'C:/Users/Пользовател/Documents/Домаха кул хацкера/PyCharm/WEB-UntitledProject')
 import data.__all_models
 target_metadata = SqlAlchemyBase.metadata
 
