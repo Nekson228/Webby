@@ -5,7 +5,9 @@
     <div class="clearfix">
         <div class="clearfix">
             <h3 class="border-bottom float-start">{{ user.name }} {{ user.surname }}</h3>
-            <a class="btn btn-outline-dark w-25 rounded-bottom float-start" href="/profile/{{ current_user.id }}/settings" style="background-image: url(/static/icons/other.png)">Настройки</a>
+                <a class="float-start" href="/profile/{{ current_user.id }}/settings">
+                    <div><img src="/static/img/settings.png" width="16px" height="16px"></div>
+                </a>
         </div>
         <div class="clearfix">
             <img src="{{ pic }}" class="profile-pic rounded-top w-25 h-25 float-start" alt="Упс! Аватарка не найдена!">
