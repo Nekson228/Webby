@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set message_space = namespace(message='') %}
+<h2 align="center">Настройка профиля</h2>
+<form class="float_container w-75" method="post" novalidate>
+    <div>
+        <div>
+            {{ form.csrf_token }}
+        </div>
+        <div>
+            {% for field in form if field.name != 'csrf_token' and field.name != 'confirm_field' %}
+            <div>
+                {{ field.label() }}
+                <br>
+                {% if field.errors %}
+                    {{ field(class="error_field") }}
+                    {% set message_space.message = field.errors[0] %}
+                {% else %}
+                    {{ field(class="normal_field") }}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="message">{{ message_space.message }}</div>
+        <div>
+            {{ form.confirm_field(class="submit-button btn btn-outline-info") }}
+        </div>
+    </div>
+</form>
+{% endblock %}

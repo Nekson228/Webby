@@ -3,7 +3,10 @@
 {% block content %}
 <form class="clearfix">
     <div class="clearfix">
-        <h3 class="border-bottom">{{ user.name }} {{ user.surname }}</h3>
+        <div class="clearfix">
+            <h3 class="border-bottom float-start">{{ user.name }} {{ user.surname }}</h3>
+            <a class="btn btn-outline-dark w-25 rounded-bottom float-start" href="/profile/{{ current_user.id }}/settings" style="background-image: url(/static/icons/other.png)">Настройки</a>
+        </div>
         <div class="clearfix">
             <img src="{{ pic }}" class="profile-pic rounded-top w-25 h-25 float-start" alt="Упс! Аватарка не найдена!">
             <div class="float-start">
@@ -15,7 +18,7 @@
         </div>
         <div>
             {% if user.id == current_user.id %}
-                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/avatar/{{ current_user.id }}">Сменить аватарку</a>
+                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/{{ current_user.id }}/avatar">Сменить аватарку</a>
             {% else %}
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversation/{{ user.id }}#page-bottom">Написать сообщение</a>
             {% endif %}

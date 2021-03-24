@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 
@@ -66,6 +66,22 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route('/reset_password', methods=["POST", "GET"])
+def reset_password():
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        session = create_session()
+        user = session.query(User).filter(User.email == form.email_field.data).first()
+        if user:
+            if not user.check_password(form.password_field.data):
+                user.set_password(form.password_field.data)
+                session.commit()
+                return redirect('/login')
+            return render_template('reset_password.html', form=form, message="Пароль идентичен предыдущему")
+        return render_template('reset_password.html', form=form, message="Пользователь не найден")
+    return render_template('reset_password.html', form=form)
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -81,7 +97,7 @@ def conversation(user_id):
     messages = session.query(Message).filter(((Message.to_id == current_user.id) & (Message.from_id == user_id)) |
                                              ((Message.from_id == current_user.id) & (Message.to_id == user_id)))
     companion = session.query(User).filter(User.id == user_id).first()
-    sender = session.query(User).filter(User.id == current_user.id).first()
+    sender = session.query(User).filter(User.id == user_id).first()
     if form.validate_on_submit():
         msg, cnt = Message(), Content()
         cnt.content = form.message_field.data
@@ -119,7 +135,7 @@ def show_profile(user_id):
     return render_template('profile.html', user=user, pic=profile_pic)
 
 
-@app.route('/profile/avatar/<int:user_id>', methods=['GET', 'POST'])
+@app.route('/profile/<int:user_id>/avatar', methods=['GET', 'POST'])
 @login_required
 def change_avatar(user_id):
     form = AvatarForm()
@@ -141,7 +157,28 @@ def change_avatar(user_id):
             session.add(avatar)
             session.commit()
         return redirect(f'/profile/{user_id}')
-    return render_template('avatar.html', form=form)
+    return render_template('avatar.html', form=form,)
+
+
+@app.route('/profile/<int:user_id>/settings', methods=["GET", "POST"])
+@login_required
+def set_profile(user_id):
+    session = create_session()
+    user = session.query(User).filter(User.id == user_id).first()
+    form = SetupProfileForm()
+    if request.method == "GET":
+        form.name_field.data = user.name
+        form.surname_field.data = user.surname
+        form.birthday_field.data = user.birthday
+        form.phone_number_field.data = user.phone_number
+    if form.validate_on_submit():
+        user.name = form.name_field.data
+        user.surname = form.surname_field.data
+        user.birthday = form.birthday_field.data
+        user.phone_number = form.phone_number_field.data
+        session.commit()
+        return redirect('/')
+    return render_template('settings.html', form=form)
 
 
 if __name__ == '__main__':

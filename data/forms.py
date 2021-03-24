@@ -42,9 +42,27 @@ class MessageForm(FlaskForm):
 
 
 class AvatarForm(FlaskForm):
-    link_field = FileField(f"Прикрепите файл с изображением в одном из возиожных "
+    link_field = FileField(f"Прикрепите файл с изображением в одном из возможных "
                            f"форматов: {', '.join(SUPPORTED_IMG_FORMATS)}",
                            validators=[FileRequired(), FileAllowed(SUPPORTED_IMG_FORMATS,
                                                                    f"Неверный формат. Доступные форматы: "
                                                                    f"{', '.join(SUPPORTED_IMG_FORMATS)}")])
     confirm_field = SubmitField('Установить')
+
+
+class SetupProfileForm(FlaskForm):
+    name_field = StringField('Имя:', validators=[DataRequired(REQ_MESSAGE)])
+    surname_field = StringField('Фамилия:', validators=[DataRequired(REQ_MESSAGE)])
+    birthday_field = DateField('Дата рождения (ГГГГ-ММ-ДД):', validators=[DataRequired(REQ_MESSAGE)])
+    phone_number_field = StringField('Номер телефона:', validators=[DataRequired(REQ_MESSAGE)])
+    confirm_field = SubmitField('Применить')
+
+
+class ResetPasswordForm(FlaskForm):
+    email_field = EmailField('Актуальный email адрес:', validators=[DataRequired(REQ_MESSAGE)])
+    password_field = PasswordField('Новый пароль:',
+                                   validators=[DataRequired(REQ_MESSAGE),
+                                               Length(min=8, message=PSW_LEN_MESSAGE)])
+    confirm_password_field = PasswordField('Подтвердите новый пароль:',
+                                           validators=[EqualTo('password_field', PSW_EQUAL_MESSAGE)])
+    submit_field = SubmitField('Сменить пароль')
