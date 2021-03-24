@@ -119,7 +119,7 @@ def show_profile(user_id):
     return render_template('profile.html', user=user, pic=profile_pic)
 
 
-@app.route('/profile/avatar/<int:user_id>', methods=['GET', 'POST'])
+@app.route('/profile/<int:user_id>/avatar', methods=['GET', 'POST'])
 @login_required
 def change_avatar(user_id):
     form = AvatarForm()
@@ -142,6 +142,25 @@ def change_avatar(user_id):
             session.commit()
         return redirect(f'/profile/{user_id}')
     return render_template('avatar.html', form=form)
+
+
+@app.route('/conversations')
+@login_required
+def conversations():
+    from itertools import groupby
+
+    session = create_session()
+    messages = session.query(Message).filter((Message.to_id == current_user.id) |
+                                             (Message.from_id == current_user.id)).all()
+    companions = [msg.sender for msg in messages if msg.sender != current_user]
+    companions = list(reversed([user[0] for user in groupby(companions)]))
+    last_messages = []
+    for user in companions:
+        last_messages.append(session.query(Message).filter(((Message.to_id == current_user.id) &
+                                                            (Message.from_id == user.id)) |
+                                                           ((Message.from_id == current_user.id) &
+                                                            (Message.to_id == user.id))).all()[-1])
+    return render_template('conversations.html', companions=companions, last_messages=last_messages)
 
 
 if __name__ == '__main__':

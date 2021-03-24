@@ -1,11 +1,12 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy_serializer import SerializerMixin
 
 from data.db_session import SqlAlchemyBase
 
 
-class Message(SqlAlchemyBase):
+class Message(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'messages'
 
     id = Column(Integer, autoincrement=True, primary_key=True)

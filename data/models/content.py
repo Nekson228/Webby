@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy_serializer import SerializerMixin
 
 from data.db_session import SqlAlchemyBase
 
 
-class Content(SqlAlchemyBase):
+class Content(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'contents'
 
     id = Column(Integer, autoincrement=True, primary_key=True)
