@@ -177,7 +177,7 @@ def set_profile(user_id):
         user.birthday = form.birthday_field.data
         user.phone_number = form.phone_number_field.data
         session.commit()
-        return redirect('/')
+        return redirect(f'/profile/{user_id}')
     return render_template('settings.html', form=form)
 
 
