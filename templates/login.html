@@ -3,7 +3,7 @@
 {% block content %}
 {% set login_data = ['email_field', 'password_field', 'confirm_password_field'] %}
 {% set message_space = namespace(message='') %}
-<form method="post" novalidate>
+<form method="post" novalidate class="fit-content">
     <div>
         {{ form.csrf_token }}
     </div>

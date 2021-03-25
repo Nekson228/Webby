@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form>
+        <div>
+            <h3 class="border-bottom p-1">Мои чаты</h3>
+            {% for user in companions %}
+                <a href="/conversation/{{ user.id }}#bottom" class="text-reset">
+                    <div class="border-bottom p-2">
+                        <b>{{ user.name }} {{ user.surname }}</b>
+                        <p>{% if last_messages[loop.index - 1].sender == current_user %}Вы{% else %}{{ last_messages[loop.index - 1].sender.name }} {{ last_messages[loop.index - 1].sender.surname }}{% endif %}: {{ last_messages[loop.index - 1].content.content }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </form>
+{% endblock %}

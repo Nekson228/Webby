@@ -181,6 +181,25 @@ def set_profile(user_id):
     return render_template('settings.html', form=form)
 
 
+@app.route('/conversations')
+@login_required
+def conversations():
+    from itertools import groupby
+
+    session = create_session()
+    messages = session.query(Message).filter((Message.to_id == current_user.id) |
+                                             (Message.from_id == current_user.id)).all()
+    companions = [msg.sender for msg in messages if msg.sender != current_user]
+    companions = list(reversed([user[0] for user in groupby(companions)]))
+    last_messages = []
+    for user in companions:
+        last_messages.append(session.query(Message).filter(((Message.to_id == current_user.id) &
+                                                            (Message.from_id == user.id)) |
+                                                           ((Message.from_id == current_user.id) &
+                                                            (Message.to_id == user.id))).all()[-1])
+    return render_template('conversations.html', companions=companions, last_messages=last_messages)
+
+
 if __name__ == '__main__':
     global_init('db/chats_db.sqlite')
     app.run('127.0.0.1', 8080, debug=True)

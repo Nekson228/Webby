@@ -22,7 +22,7 @@
             {% if user.id == current_user.id %}
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/{{ current_user.id }}/avatar">Сменить аватарку</a>
             {% else %}
-                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversation/{{ user.id }}#page-bottom">Написать сообщение</a>
+                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversation/{{ user.id }}#bottom">Написать сообщение</a>
             {% endif %}
         </div>
     </div>
