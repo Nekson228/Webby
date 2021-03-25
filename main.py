@@ -157,15 +157,18 @@ def change_avatar(user_id):
             session.add(avatar)
             session.commit()
         return redirect(f'/profile/{user_id}')
-    return render_template('avatar.html', form=form,)
+    return render_template('avatar.html', form=form)
 
 
 @app.route('/profile/<int:user_id>/settings', methods=["GET", "POST"])
 @login_required
 def set_profile(user_id):
     session = create_session()
+    interests = session.query(Interest).all()
     user = session.query(User).filter(User.id == user_id).first()
+    choices = [(i.title, i.title) for i in interests]
     form = SetupProfileForm()
+    form.interests_field.choices = choices
     if request.method == "GET":
         form.name_field.data = user.name
         form.surname_field.data = user.surname
@@ -176,6 +179,12 @@ def set_profile(user_id):
         user.surname = form.surname_field.data
         user.birthday = form.birthday_field.data
         user.phone_number = form.phone_number_field.data
+        for i in interests:
+            if i.title not in form.interests_field.data:
+                if i.title in [j.title for j in user.interests]:
+                    user.interests.remove(i)
+            else:
+                user.interests.append(i)
         session.commit()
         return redirect(f'/profile/{user_id}')
     return render_template('settings.html', form=form)

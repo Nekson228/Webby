@@ -5,17 +5,27 @@
     <div class="clearfix">
         <div class="clearfix">
             <h3 class="border-bottom float-start">{{ user.name }} {{ user.surname }}</h3>
+            {% if user.id == current_user.id %}
                 <a class="float-start" href="/profile/{{ current_user.id }}/settings">
                     <div><img src="/static/img/settings.png" width="16px" height="16px"></div>
                 </a>
+            {% endif %}
         </div>
         <div class="clearfix">
             <img src="{{ pic }}" class="profile-pic rounded-top w-25 h-25 float-start" alt="Упс! Аватарка не найдена!">
-            <div class="float-start">
+            <div class="float-start w-50">
                 <h3>О пользователе:</h3>
+                <p>Номер телефона: <b>{{ user.phone_number }}</b></p>
                 <p>День рождения: <b>{{ user.birthday.year }}-{{ user.birthday.month }}-{{ user.birthday.day }}</b></p>
                 <p>Дата регистрации: <b>{{ user.registration_time.year }}-{{ user.registration_time.month }}-{{ user.registration_time.day }}</b></p>
                 <p>Баллы активности: <b>{{ user.rating }}</b></p>
+                {% if user.interests %}
+                    <p>Интересы:
+                        {% for i in user.interests %}
+                        <b>{{ i.title }}{% if not loop.last %},{% endif %}</b>
+                        {% endfor %}
+                    </p>
+                {% endif %}
             </div>
         </div>
         <div>
@@ -23,6 +33,11 @@
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/{{ current_user.id }}/avatar">Сменить аватарку</a>
             {% else %}
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversation/{{ user.id }}#bottom">Написать сообщение</a>
+            {% endif %}
+        </div>
+        <div>
+            {% if user.id == current_user.id and not user.interests %}
+                <p>Ого! У Вас нет интересов! Настройте их!<br>(Если что, это в настройках профиля, рядом с именем, либо в выпадающем меню сверху)</p>
             {% endif %}
         </div>
     </div>

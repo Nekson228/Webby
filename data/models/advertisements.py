@@ -17,3 +17,4 @@ class Advertisement(SqlAlchemyBase):
 
     author = relationship('User', back_populates='advertisements')
     content = relationship('Content')
+    interests = relationship('Interest', secondary='advertisements_to_interests', backref='advertisements')

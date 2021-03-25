@@ -1,5 +1,6 @@
 from flask_wtf.file import FileRequired, FileAllowed
-from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField, FileField
+from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField, FileField, SelectMultipleField, \
+    widgets
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, EqualTo, Length
 from flask_wtf import FlaskForm
@@ -8,6 +9,11 @@ REQ_MESSAGE = 'Не все поля заполнены'
 PSW_LEN_MESSAGE = 'Пароль должен содеражть не менее 8 символов'
 PSW_EQUAL_MESSAGE = 'Пароли должны совпадать'
 SUPPORTED_IMG_FORMATS = ['jpg', 'png']
+
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 
 class LoginForm(FlaskForm):
@@ -55,6 +61,7 @@ class SetupProfileForm(FlaskForm):
     surname_field = StringField('Фамилия:', validators=[DataRequired(REQ_MESSAGE)])
     birthday_field = DateField('Дата рождения (ГГГГ-ММ-ДД):', validators=[DataRequired(REQ_MESSAGE)])
     phone_number_field = StringField('Номер телефона:', validators=[DataRequired(REQ_MESSAGE)])
+    interests_field = MultiCheckboxField('Интересы', choices=[('foo', 'bar'), ('cout', 'pep')])
     confirm_field = SubmitField('Применить')
 
 
