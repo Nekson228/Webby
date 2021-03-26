@@ -35,27 +35,25 @@
 </div>
 <main role="main" class="container clearfix">
     {% block content %}{% endblock %}
-    <div class="footer container-xl width-full p-responsive">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">НекитЧаты<br>Nekson & Пабло Сабля, 2021.</span>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" href="/">Главная</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" href="/info">О проекте</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" href="/api">API</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-    </div>
 </main>
+<footer class="clearfix p-2 bg-light">
+    <span class="fs-6 float-end"><b>НекитЧаты</b><br>Nekson & Пабло Сабля, 2021.</span>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/info">О проекте</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/api">API</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+</footer>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

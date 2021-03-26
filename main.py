@@ -107,7 +107,7 @@ def conversation(user_id):
     messages = session.query(Message).filter(((Message.to_id == current_user.id) & (Message.from_id == user_id)) |
                                              ((Message.from_id == current_user.id) & (Message.to_id == user_id)))
     companion = session.query(User).filter(User.id == user_id).first()
-    sender = session.query(User).filter(User.id == user_id).first()
+    sender = session.query(User).filter(User.id == current_user.id).first()
     if form.validate_on_submit():
         msg, cnt = Message(), Content()
         cnt.content = form.message_field.data
@@ -130,6 +130,28 @@ def conversation(user_id):
         session.commit()
         return redirect(f"/conversation/{user_id}")
     return render_template('chat.html', form=form, messages=messages, companion=companion)
+
+
+@app.route('/conversations')
+@login_required
+def conversations():
+    from itertools import groupby
+
+    session = create_session()
+    messages = session.query(Message).filter((Message.to_id == current_user.id) |
+                                             (Message.from_id == current_user.id)).all()
+    companions = sorted([msg.sender if msg.sender != current_user else msg.receiver for msg in messages],
+                        key=lambda x: x.name)
+    companions = list(reversed([user[0] for user in groupby(companions)]))
+    last_messages = []
+    for user in companions:
+        last_messages.append(session.query(Message).filter(((Message.to_id == current_user.id) &
+                                                            (Message.from_id == user.id)) |
+                                                           ((Message.from_id == current_user.id) &
+                                                            (Message.to_id == user.id))).all()[-1])
+    conversations_list = sorted([[companions[i], last_messages[i]] for i in range(len(companions))],
+                                key=lambda x: x[1].created_at)[::-1]
+    return render_template('conversations.html', conversations_list=conversations_list)
 
 
 @app.route('/profile/<int:user_id>')
@@ -200,23 +222,31 @@ def set_profile(user_id):
     return render_template('settings.html', form=form)
 
 
-@app.route('/conversations')
 @login_required
-def conversations():
-    from itertools import groupby
-
+@app.route('/advertisements/create', methods=['GET', 'POST'])
+def create_advertisement():
+    form = AdvertisementForm()
     session = create_session()
-    messages = session.query(Message).filter((Message.to_id == current_user.id) |
-                                             (Message.from_id == current_user.id)).all()
-    companions = [msg.sender for msg in messages if msg.sender != current_user]
-    companions = list(reversed([user[0] for user in groupby(companions)]))
-    last_messages = []
-    for user in companions:
-        last_messages.append(session.query(Message).filter(((Message.to_id == current_user.id) &
-                                                            (Message.from_id == user.id)) |
-                                                           ((Message.from_id == current_user.id) &
-                                                            (Message.to_id == user.id))).all()[-1])
-    return render_template('conversations.html', companions=companions, last_messages=last_messages)
+    tags = session.query(Interest).all()
+    choices = [(i.title, i.title) for i in tags]
+    form.tags_field.choices = choices
+    if form.validate_on_submit():
+        cnt = Content()
+        cnt.content = form.content_field.data
+        session.add(cnt)
+        session.commit()
+        ad = Advertisement()
+        ad.title = form.title_field.data
+        ad.author_id = current_user.id
+        ad.price = form.price_field.data
+        ad.content_id = cnt.id
+        for tag in form.tags_field.data:
+            tag_obj = session.query(Interest).filter(Interest.title == tag).first()
+            ad.interests.append(tag_obj)
+        session.add(ad)
+        session.commit()
+        return redirect('/')
+    return render_template('create_ad.html', form=form)
 
 
 if __name__ == '__main__':

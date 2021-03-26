@@ -17,3 +17,6 @@ class Message(SqlAlchemyBase, SerializerMixin):
     sender = relationship("User", foreign_keys=[from_id])
     receiver = relationship("User", foreign_keys=[to_id])
     content = relationship("Content")
+
+    def __repr__(self):
+        return f'<Message> {self.id}: from {self.sender} to {self.receiver}: "{self.content.content}"'

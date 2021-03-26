@@ -1,6 +1,6 @@
 from flask_wtf.file import FileRequired, FileAllowed
 from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField, FileField, SelectMultipleField, \
-    widgets
+    widgets, IntegerField, TextAreaField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, EqualTo, Length
 from flask_wtf import FlaskForm
@@ -73,3 +73,11 @@ class ResetPasswordForm(FlaskForm):
     confirm_password_field = PasswordField('Подтвердите новый пароль:',
                                            validators=[EqualTo('password_field', PSW_EQUAL_MESSAGE)])
     submit_field = SubmitField('Сменить пароль')
+
+
+class AdvertisementForm(FlaskForm):
+    title_field = StringField('Название объявления: ', validators=[DataRequired(REQ_MESSAGE)])
+    price_field = IntegerField('Цена товара/услуги: ', validators=[DataRequired(REQ_MESSAGE)])
+    content_field = TextAreaField('Опишите товар/услугу: ', validators=[DataRequired(REQ_MESSAGE)])
+    tags_field = MultiCheckboxField('Тэги: ', choices=[('foo', 'bar'), ('cout', 'pep')])
+    submit_field = SubmitField('Создать объявление')

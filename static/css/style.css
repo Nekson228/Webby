@@ -63,3 +63,9 @@ form {
 .fit-content {
     max-width: fit-content;
 }
+footer {
+    margin-top: 250px
+}
+textarea {
+    width: 100%!important
+}

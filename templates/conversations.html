@@ -4,11 +4,12 @@
     <form>
         <div>
             <h3 class="border-bottom p-1">Мои чаты</h3>
-            {% for user in companions %}
+            {% for user, msg in conversations_list %}
                 <a href="/conversation/{{ user.id }}#bottom" class="text-reset">
-                    <div class="border-bottom p-2">
+                    <div class="border-bottom p-2 text-truncate">
                         <b>{{ user.name }} {{ user.surname }}</b>
-                        <p>{% if last_messages[loop.index - 1].sender == current_user %}Вы{% else %}{{ last_messages[loop.index - 1].sender.name }} {{ last_messages[loop.index - 1].sender.surname }}{% endif %}: {{ last_messages[loop.index - 1].content.content }}</p>
+                        <p>{% if msg.sender == current_user %}Вы{% else %}{{ msg.sender.name }} {{ msg.sender.surname }}{% endif %}: {{ msg.content.content }}</p>
+                        <span class="text-secondary">{{ msg.created_at.year }}-{{ msg.created_at.month }}-{{ msg.created_at.day }} {{ msg.created_at.hour }}:{{ msg.created_at.minute }}</span>
                     </div>
                 </a>
             {% endfor %}

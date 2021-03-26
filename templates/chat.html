@@ -11,8 +11,9 @@
                 <a href="/profile/{{ companion.id }}" class="text-reset">{{ companion.name }} {{ companion.surname }}</a>
             </h3>
         </div>
-        {% for msg in messages %}
-            <div>
+        <div>
+            {% for msg in messages %}
+            <div id="{% if loop.last %}bottom{% endif %}">
                 {% if loop.previtem is defined %}
                     {% if (loop.previtem.created_at.day != msg.created_at.day) or (loop.previtem.created_at.month != msg.created_at.month)
                     or (loop.previtem.created_at.year != msg.created_at.year) %}
@@ -35,8 +36,9 @@
                 {% endif %}
                 {{ msg.content.content }}
             </div>
-        {% endfor %}
-        <div class="message_input_box" id="bottom">
+            {% endfor %}
+        </div>
+        <div class="message_input_box">
             {{ form.message_field(class="message-field w-75", placeholder="Напишите сообщение...") }}
             {{ form.send_field() }}
         </div>

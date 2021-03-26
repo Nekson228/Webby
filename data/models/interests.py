@@ -18,5 +18,6 @@ user_table = Table(
 
 class Interest(SqlAlchemyBase):
     __tablename__ = 'interests'
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(Unicode, nullable=True)
