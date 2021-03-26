@@ -29,6 +29,16 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/info')
+def info():
+    return render_template('info.html')
+
+
+@app.route('/api')
+def api():
+    return render_template('info.html')
+
+
 @login_manager.user_loader
 def load_user(user_id):
     session = create_session()
