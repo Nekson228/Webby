@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1>{{ error }}</h1>
+        <h3>{{ message }}<br>В следующий раз будьте внимательнее :)</h3>
+        <br><br>
+        {{ http_error }}
+    </div>
+{% endblock %}

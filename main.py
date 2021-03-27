@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 
@@ -15,23 +15,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    if current_user.is_authenticated:
-        form = SearchForm()
-        if form.validate_on_submit():
-            session = create_session()
-            user = session.query(User).filter(User.phone_number == form.number_field.data).first()
-            if not user:
-                return render_template('index.html', form=form, message='Пользователь не найден')
-            return render_template('index.html', form=form, user=user)
-        return render_template('index.html', form=form)
-    return render_template('index.html')
+    if not current_user.is_authenticated:
+        return redirect('/info')
+    session = create_session()
+    advertisements = session.query(Advertisement).all()[::-1][:6]
+    return render_template('actual_ads.html', ads=advertisements)
 
 
 @app.route('/info')
 def info():
-    return render_template('info.html')
+    return render_template('roadmap.html')
 
 
 @app.route('/api')
@@ -132,7 +127,7 @@ def conversation(user_id):
     return render_template('chat.html', form=form, messages=messages, companion=companion)
 
 
-@app.route('/conversations')
+@app.route('/conversations', methods=['GET', 'POST'])
 @login_required
 def conversations():
     from itertools import groupby
@@ -151,7 +146,15 @@ def conversations():
                                                             (Message.to_id == user.id))).all()[-1])
     conversations_list = sorted([[companions[i], last_messages[i]] for i in range(len(companions))],
                                 key=lambda x: x[1].created_at)[::-1]
-    return render_template('conversations.html', conversations_list=conversations_list)
+
+    form = SearchForm()
+    if form.validate_on_submit():
+        user = session.query(User).filter(User.phone_number == form.number_field.data).first()
+        if not user:
+            return render_template('conversations.html', form=form, message='Пользователь не найден',
+                                   conversations_list=conversations_list)
+        return render_template('conversations.html', form=form, user=user, conversations_list=conversations_list)
+    return render_template('conversations.html', conversations_list=conversations_list, form=form)
 
 
 @app.route('/profile/<int:user_id>')
@@ -246,7 +249,66 @@ def create_advertisement():
         session.add(ad)
         session.commit()
         return redirect('/')
-    return render_template('create_ad.html', form=form)
+    return render_template('ad_form.html', form=form)
+
+
+@login_required
+@app.route('/advertisements/<int:ad_id>/edit', methods=['GET', 'POST'])
+def edit_advertisement(ad_id):
+    session = create_session()
+    advertisement = session.query(Advertisement).filter(Advertisement.id == ad_id).first()
+    if not advertisement:
+        return abort(404)
+    if current_user != advertisement.author:
+        return abort(403)
+    form = AdvertisementForm()
+    form.title_field.data = advertisement.title
+    form.price_field.data = advertisement.price
+    form.content_field.data = advertisement.content.content
+    form.tags_field.choices = [(i.title, i.title) for i in session.query(Interest).all()]
+    form.tags_field.data = [tag.title for tag in advertisement.interests]
+    if form.validate_on_submit():
+        cnt = Content()
+        cnt.content = form.content_field.data
+        session.add(cnt)
+        session.commit()
+        advertisement.title = form.title_field.data
+        advertisement.author_id = current_user.id
+        advertisement.price = form.price_field.data
+        advertisement.content_id = cnt.id
+        advertisement.interests.clear()
+        for tag in form.tags_field.data:
+            tag_obj = session.query(Interest).filter(Interest.title == tag).first()
+            advertisement.interests.append(tag_obj)
+        session.commit()
+        return redirect('/')
+    return render_template('ad_form.html', form=form)
+
+
+@login_required
+@app.route('/advertisements/<int:ad_id>/delete')
+def delete_advertisement(ad_id):
+    session = create_session()
+    advertisement = session.query(Advertisement).filter(Advertisement.id == ad_id).first()
+    if not advertisement:
+        return abort(404)
+    if current_user != advertisement.author:
+        return abort(403)
+    session.delete(advertisement)
+    session.commit()
+    return redirect('/')
+
+
+@app.errorhandler(403)
+def handle_403(error):
+    return render_template('errorhandler.html', error='Ошибка 403.', http_error=error,
+                           message='Похоже вы попытались получить доступ к чему-то что вам не принадлежит.')
+
+
+@app.errorhandler(404)
+def handle_404(error):
+    return render_template('errorhandler.html', error='Ошибка 404.', http_error=error,
+                           message='Похоже вы попытались получить доступ к чему-то не существующему.')
 
 
 if __name__ == '__main__':

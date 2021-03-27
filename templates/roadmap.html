@@ -6,31 +6,7 @@
 <b>Для того чтобы начать работать войдите или зарегистрируйтесь (если вы этого еще не сделали).</b>
 {% else %}
 <b>Чтобы написать кому-нибудь введите его номер телефона в поле для поиска</b>
-<form method="post" novalidate class="float-end">
-    <div>
-        {{ form.csrf_token }}
-    </div>
-    <div class="number_input_box">
-        {{ form.number_field(placeholder="Номер телефона") }}
-        {{ form.search_field() }}
-    </div>
-    {% if user is defined %}
-        <div class="found_user">
-            <div class="dropdown">
-                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ user.name }} {{ user.surname }}
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="/profile/{{ user.id }}">Профиль</a>
-                    <a class="dropdown-item" href="/conversation/{{ user.id }}#bottom">Перейти к разговору</a>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    {% if message is defined %}
-        <div class="message">{{ message }}</div>
-    {% endif %}
-</form>
+
 {% endif %}
 <p>Сейчас вы можете:</p>
 <ul>
