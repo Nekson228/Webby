@@ -18,7 +18,8 @@
                 <p>Номер телефона: <b>{{ user.phone_number }}</b></p>
                 <p>День рождения: <b>{{ user.birthday.year }}-{{ user.birthday.month }}-{{ user.birthday.day }}</b></p>
                 <p>Дата регистрации: <b>{{ user.registration_time.year }}-{{ user.registration_time.month }}-{{ user.registration_time.day }}</b></p>
-                <p>Баллы активности: <b>{{ user.rating }}</b></p>
+                <p>Баллы активности: <b>{{ user.rating }}</b> (<b>{{ user.rank }}</b>)</p>
+                <a class="text-reset" href="/top"><p>Место в рейтинге: <b>{{ user.position }}</b></p></a>
                 {% if user.interests %}
                     <p>Интересы:
                         {% for i in user.interests %}

@@ -38,7 +38,7 @@ class RegistrationForm(FlaskForm):
 
 
 class SearchForm(FlaskForm):
-    number_field = StringField()
+    filter_field = StringField()
     search_field = SubmitField('Искать')
 
 

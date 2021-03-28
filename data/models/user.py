@@ -20,6 +20,8 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     hashed_password = Column(String)
     registration_time = Column(DateTime, default=datetime.now)
     rating = Column(Integer, default=0)
+    rank = Column(Unicode)
+    position = Column(Integer)
 
     advertisements = relationship('Advertisement', back_populates='author')
     interests = relationship('Interest', secondary='users_to_interests', backref='users')

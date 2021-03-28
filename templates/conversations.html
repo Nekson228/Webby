@@ -1,32 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form method="post" novalidate>
-        <div>
-            {{ form.csrf_token }}
-        </div>
-        <div class="number_input_box">
-            {{ form.number_field(placeholder="Номер телефона") }}
-            {{ form.search_field() }}
-        </div>
-        {% if user is defined %}
-            <div class="found_user">
-                <div class="dropdown">
-                    <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ user.name }} {{ user.surname }}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/profile/{{ user.id }}">Профиль</a>
-                        <a class="dropdown-item" href="/conversation/{{ user.id }}#bottom">Перейти к разговору</a>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-        {% if message is defined %}
-            <div class="message">{{ message }}</div>
-        {% endif %}
-    </form>
     <form>
+        <div>
+            <a class="btn btn-outline-dark w-25 rounded-bottom" href="/search">Поискать собеседника</a>
+        </div>
         <div>
             <h3 class="border-bottom p-1">Мои чаты</h3>
             {% for user, msg in conversations_list %}

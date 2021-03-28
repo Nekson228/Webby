@@ -8,6 +8,34 @@ from data.__all_models import *
 
 import os
 
+RANKS = {
+    0: "Новоявленный пользователь",
+    10: "Еще зеленый",
+    25: "Новичок",
+    50: "Ученик",
+    100: "Практикант сообщений",
+    150: "Освоившийся",
+    200: "Сформированный пользователь",
+    300: "Уверенный пользователь чатов",
+    500: "Любитель пообщаться",
+    1000: "Спамер",
+    1500: "Спамер со стажем",
+    2000: "Бывалый",
+    5000: "Преданный",
+    10000: "Владыка чатов",
+    100000: "Порождение чатов",
+    1000000: "Покровитель строчек"
+}
+
+RATE = {
+    1: 1,
+    50: 2,
+    100: 3,
+    250: 5,
+    500: 10,
+    1000: 50
+}
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
@@ -34,6 +62,13 @@ def api():
     return render_template('info.html')
 
 
+@app.route('/top')
+def top():
+    session = create_session()
+    users = session.query(User).order_by(User.position).filter(User.position <= 100).all()
+    return render_template('top.html', top_users=users)
+
+
 @login_manager.user_loader
 def load_user(user_id):
     session = create_session()
@@ -45,6 +80,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         session = create_session()
+        users = session.query(User).order_by(User.rating.desc())
         user = User()
         user.name = form.name_field.data
         user.surname = form.surname_field.data
@@ -52,6 +88,8 @@ def register():
         user.email = form.email_field.data
         user.phone_number = form.phone_number_field.data
         user.set_password(form.password_field.data)
+        user.rank = RANKS[0]
+        user.position = users.count() + 1
         session.add(user)
         session.commit()
         return redirect('/')
@@ -108,19 +146,25 @@ def conversation(user_id):
         cnt.content = form.message_field.data
         session.add(cnt)
         session.commit()
+        for i in reversed(RATE.keys()):
+            if len(cnt.content) >= i:
+                sender.rating += RATE[i]
+                session.commit()
+                break
+        for i in reversed(RANKS.keys()):
+            if sender.rating >= i:
+                sender.rank = RANKS[i]
+                session.commit()
+                break
+        all_users = session.query(User).order_by(User.rating.desc())
+        count = 1
+        for i in all_users:
+            i.position = count
+            count += 1
+        session.commit()
         msg.to_id = user_id
         msg.from_id = current_user.id
         msg.content_id = cnt.id
-        if len(cnt.content) < 50:
-            sender.rating += 1
-        elif 50 <= len(cnt.content) < 100:
-            sender.rating += 2
-        elif 100 <= len(cnt.content) < 250:
-            sender.rating += 3
-        elif 250 <= len(cnt.content) < 500:
-            sender.rating += 5
-        elif 500 <= len(cnt.content):
-            sender.rating += 10
         session.add(msg)
         session.commit()
         return redirect(f"/conversation/{user_id}")
@@ -146,15 +190,22 @@ def conversations():
                                                             (Message.to_id == user.id))).all()[-1])
     conversations_list = sorted([[companions[i], last_messages[i]] for i in range(len(companions))],
                                 key=lambda x: x[1].created_at)[::-1]
+    return render_template('conversations.html', conversations_list=conversations_list)
 
+
+@app.route('/search', methods=["GET", "POST"])
+@login_required
+def search():
+    session = create_session()
     form = SearchForm()
     if form.validate_on_submit():
-        user = session.query(User).filter(User.phone_number == form.number_field.data).first()
-        if not user:
-            return render_template('conversations.html', form=form, message='Пользователь не найден',
-                                   conversations_list=conversations_list)
-        return render_template('conversations.html', form=form, user=user, conversations_list=conversations_list)
-    return render_template('conversations.html', conversations_list=conversations_list, form=form)
+        users = session.query(User).filter((User.name.like(f"{form.filter_field.data}%")) |
+                                           (User.surname.like(f"{form.filter_field.data}%")) |
+                                           (User.phone_number.like(f"{form.filter_field.data}%"))).all()
+        if not users:
+            return render_template('search.html', form=form, message='Предложений по поиску нет')
+        return render_template('search.html', form=form, users=users)
+    return render_template('search.html', form=form)
 
 
 @app.route('/profile/<int:user_id>')
