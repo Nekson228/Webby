@@ -29,10 +29,12 @@ RANKS = {
 
 RATE = {
     1: 1,
-    50: 2,
-    100: 3,
-    250: 5,
-    500: 10,
+    10: 2,
+    25: 3,
+    50: 4,
+    100: 5,
+    250: 10,
+    500: 25,
     1000: 50
 }
 
@@ -146,11 +148,13 @@ def conversation(user_id):
         cnt.content = form.message_field.data
         session.add(cnt)
         session.commit()
+        to_rate = len(cnt.content)
         for i in reversed(RATE.keys()):
-            if len(cnt.content) >= i:
-                sender.rating += RATE[i]
-                session.commit()
-                break
+            if i != 1:
+                while to_rate >= i:
+                    sender.rating += RATE[i]
+                    to_rate -= i
+        session.commit()
         for i in reversed(RANKS.keys()):
             if sender.rating >= i:
                 sender.rank = RANKS[i]
