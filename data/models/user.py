@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, Unicode, DateTime
+from sqlalchemy import Column, Integer, String, Unicode, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy_serializer import SerializerMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,11 +20,12 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     hashed_password = Column(String)
     registration_time = Column(DateTime, default=datetime.now)
     rating = Column(Integer, default=0)
-    rank = Column(Unicode)
+    rank_id = Column(Integer, ForeignKey('ranks.id'))
     position = Column(Integer)
 
     advertisements = relationship('Advertisement', back_populates='author')
     interests = relationship('Interest', secondary='users_to_interests', backref='users')
+    rank = relationship('Rank')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

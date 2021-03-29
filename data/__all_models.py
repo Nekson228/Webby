@@ -4,3 +4,4 @@ from .models.message import Message
 from .models.avatars import Avatar
 from .models.advertisements import Advertisement
 from .models.interests import Interest
+from .models.ranks import Rank

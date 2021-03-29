@@ -26,5 +26,8 @@
                 {% endfor %}
             </div>
         {% endif %}
+        {% if message is defined %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
     </form>
 {% endblock %}
