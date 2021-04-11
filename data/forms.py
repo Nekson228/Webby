@@ -81,3 +81,8 @@ class AdvertisementForm(FlaskForm):
     content_field = TextAreaField('Опишите товар/услугу: ', validators=[DataRequired(REQ_MESSAGE)])
     tags_field = MultiCheckboxField('Тэги: ', choices=[('foo', 'bar'), ('cout', 'pep')])
     submit_field = SubmitField('Создать объявление')
+
+
+class TokenForm(FlaskForm):
+    token_field = StringField('Ваш токен:')
+    get_field = SubmitField('Сгенерировать токен')

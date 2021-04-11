@@ -5,3 +5,4 @@ from .models.avatars import Avatar
 from .models.advertisements import Advertisement
 from .models.interests import Interest
 from .models.ranks import Rank
+from .models.tokens import Token

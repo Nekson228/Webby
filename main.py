@@ -5,38 +5,10 @@ from werkzeug.utils import secure_filename
 from data.forms import *
 from data.db_session import create_session, global_init
 from data.__all_models import *
+from data.constants import *
 
 import os
-
-RANKS = {
-    0: "Новоявленный пользователь",
-    10: "Еще зеленый",
-    25: "Новичок",
-    50: "Ученик",
-    100: "Практикант сообщений",
-    150: "Освоившийся",
-    200: "Сформированный пользователь",
-    300: "Уверенный пользователь чатов",
-    500: "Любитель пообщаться",
-    1000: "Спамер",
-    1500: "Спамер со стажем",
-    2000: "Бывалый",
-    5000: "Преданный",
-    10000: "Владыка чатов",
-    100000: "Порождение чатов",
-    1000000: "Покровитель строчек"
-}
-
-RATE = {
-    10: 1,
-    50: 2,
-    100: 3,
-    250: 4,
-    500: 5,
-    1000: 10,
-    2000: 25,
-    5000: 50
-}
+from secrets import token_urlsafe
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -61,7 +33,28 @@ def info():
 
 @app.route('/api')
 def api():
-    return render_template('info.html')
+    return render_template('api.html')
+
+
+@app.route('/api/get_token', methods=['GET', 'POST'])
+@login_required
+def get_token():
+    session = create_session()
+    form = TokenForm()
+    token = current_user.api_token
+    if form.validate_on_submit():
+        user = session.query(User).filter(User.id == current_user.id).first()
+        if current_user.api_token:
+            token = user.api_token
+            token.token = token_urlsafe(32)
+        else:
+            token = Token()
+            token.token = token_urlsafe(32)
+            session.add(token)
+            session.commit()
+            user.token_id = token.id
+        session.commit()
+    return render_template('get_token.html', form=form, token=token)
 
 
 @app.route('/top')
@@ -363,7 +356,8 @@ def handle_403(error):
 @app.errorhandler(404)
 def handle_404(error):
     return render_template('errorhandler.html', error='Ошибка 404.', http_error=error,
-                           message='Похоже вы попытались получить доступ к чему-то не существующему.')
+                           message='Похоже вы попытались получить доступ к чему-то не существующему. '
+                                   'Возможно, вы не вошли в свой аккаунт.')
 
 
 if __name__ == '__main__':

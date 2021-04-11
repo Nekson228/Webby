@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Webby API</h2>
+    <form method="POST" novalidate>
+        <div class="w-100">
+            <div>{{ form.csrf_token }}</div>
+            <div>
+                {{ form.token_field.label() }} {{ form.token_field(class='w-75', readonly=true,
+                value=token.token if token else "У вас еще нет токена") }}
+                {{ form.get_field() }}
+            </div>
+        </div>
+    </form>
+{% endblock %}
