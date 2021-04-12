@@ -10,10 +10,10 @@
         </div>
         <div class="normal_field float-end">
             {{ form.interests_field.label() }}
-            {{ form.interests_field() }}
+            {{ form.interests_field(class="scroll-content border") }}
         </div>
         <div>
-            {% for field in form if field.name != 'csrf_token' and field.name != 'confirm_field' and field.name != 'interests_field' %}
+            {% for field in form if field.name not in ['csrf_token', 'confirm_field', 'interests_field'] %}
             <div>
                 {{ field.label() }}
                 <br>

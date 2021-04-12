@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, Unicode, Table, ForeignKey
+from sqlalchemy_serializer import SerializerMixin
+
 from data.db_session import SqlAlchemyBase
 
 ad_table = Table(
@@ -16,8 +18,9 @@ user_table = Table(
 )
 
 
-class Interest(SqlAlchemyBase):
+class Interest(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'interests'
+    serialize_rules = ('-advertisements', '-users')
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(Unicode, nullable=True)

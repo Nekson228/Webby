@@ -7,7 +7,7 @@
         {{ form.csrf_token }}
     </div>
     <div>
-        {% for field in form if field.name != 'csrf_token' and field.name != 'submit_field' %}
+        {% for field in form if field.name not in ['csrf_token', 'submit_field', 'tags_field'] %}
         <div>
             {{ field.label() }}
             <br>
@@ -19,6 +19,10 @@
             {% endif %}
         </div>
         {% endfor %}
+        <div>
+            {{ form.tags_field.label() }}
+            <div class="scroll-content border">{{ form.tags_field() }}</div>
+        </div>
         <div class="message">{{ message_space.message }}</div>
         <div class="message">{{ message }}</div>
         <div>

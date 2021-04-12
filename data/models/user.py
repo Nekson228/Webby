@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, Unicode, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Unicode, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy_serializer import SerializerMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,6 +10,7 @@ from data.db_session import SqlAlchemyBase
 
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
+    serialize_rules = ('-advertisements',)
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(Unicode)
@@ -22,12 +23,11 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     rating = Column(Integer, default=0)
     rank_id = Column(Integer, ForeignKey('ranks.id'))
     position = Column(Integer)
-    token_id = Column(Integer, ForeignKey('tokens.id'))
+    admin = Column(Boolean, default=0)
 
     advertisements = relationship('Advertisement', back_populates='author')
     interests = relationship('Interest', secondary='users_to_interests', backref='users')
     rank = relationship('Rank')
-    api_token = relationship('Token')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

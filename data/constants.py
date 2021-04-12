@@ -1,3 +1,5 @@
+SECRET_KEY = 'yandexlyceum_secret_key'
+
 RANKS = {
     0: "Новоявленный пользователь",
     10: "Еще зеленый",

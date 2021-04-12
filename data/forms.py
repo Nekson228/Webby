@@ -78,7 +78,8 @@ class ResetPasswordForm(FlaskForm):
 class AdvertisementForm(FlaskForm):
     title_field = StringField('Название объявления: ', validators=[DataRequired(REQ_MESSAGE)])
     price_field = IntegerField('Цена товара/услуги: ', validators=[DataRequired(REQ_MESSAGE)])
-    content_field = TextAreaField('Опишите товар/услугу: ', validators=[DataRequired(REQ_MESSAGE)])
+    content_field = TextAreaField('Опишите товар/услугу: ', validators=[DataRequired(REQ_MESSAGE)],
+                                  render_kw={'class': 'w-75'})
     tags_field = MultiCheckboxField('Тэги: ', choices=[('foo', 'bar'), ('cout', 'pep')])
     submit_field = SubmitField('Создать объявление')
 

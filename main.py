@@ -7,11 +7,12 @@ from data.db_session import create_session, global_init
 from data.__all_models import *
 from data.constants import *
 
+from api import api_blueprint
+
 import os
-from secrets import token_urlsafe
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app.config['SECRET_KEY'] = SECRET_KEY
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -34,27 +35,6 @@ def info():
 @app.route('/api')
 def api():
     return render_template('api.html')
-
-
-@app.route('/api/get_token', methods=['GET', 'POST'])
-@login_required
-def get_token():
-    session = create_session()
-    form = TokenForm()
-    token = current_user.api_token
-    if form.validate_on_submit():
-        user = session.query(User).filter(User.id == current_user.id).first()
-        if current_user.api_token:
-            token = user.api_token
-            token.token = token_urlsafe(32)
-        else:
-            token = Token()
-            token.token = token_urlsafe(32)
-            session.add(token)
-            session.commit()
-            user.token_id = token.id
-        session.commit()
-    return render_template('get_token.html', form=form, token=token)
 
 
 @app.route('/top')
@@ -127,7 +107,7 @@ def logout():
     return redirect('/')
 
 
-@app.route('/conversation/<int:user_id>', methods=['POST', 'GET'])
+@app.route('/conversations/<int:user_id>', methods=['POST', 'GET'])
 @login_required
 def conversation(user_id):
     form = MessageForm()
@@ -150,7 +130,8 @@ def conversation(user_id):
         session.commit()
         for i in reversed(RANKS.keys()):
             if sender.rating >= i:
-                sender.rank = RANKS[i]
+                rank = session.query(Rank).filter(Rank.title == RANKS[i]).first()
+                sender.rank_id = rank.id
                 session.commit()
                 break
         all_users = session.query(User).order_by(User.rating.desc())
@@ -246,31 +227,27 @@ def change_avatar(user_id):
 @app.route('/profile/<int:user_id>/settings', methods=["GET", "POST"])
 @login_required
 def set_profile(user_id):
-    session = create_session()
-    interests = session.query(Interest).all()
-    user = session.query(User).filter(User.id == user_id).first()
-    choices = [(i.title, i.title) for i in interests]
     form = SetupProfileForm()
-    form.interests_field.choices = choices
-    if request.method == "GET":
-        form.name_field.data = user.name
-        form.surname_field.data = user.surname
-        form.birthday_field.data = user.birthday
-        form.phone_number_field.data = user.phone_number
+    session = create_session()
+    user = session.query(User).filter(User.id == user_id).first()
+    form.interests_field.choices = [(i.title, i.title) for i in session.query(Interest).all()]
+    form.interests_field.data = [tag.title for tag in user.interests]
+    form.name_field.data = user.name
+    form.surname_field.data = user.surname
+    form.birthday_field.data = user.birthday
+    form.phone_number_field.data = user.phone_number
     if form.validate_on_submit():
         user.name = form.name_field.data
         user.surname = form.surname_field.data
         user.birthday = form.birthday_field.data
         user.phone_number = form.phone_number_field.data
-        for i in interests:
-            if i.title not in form.interests_field.data:
-                if i.title in [j.title for j in user.interests]:
-                    user.interests.remove(i)
-            else:
-                user.interests.append(i)
+        user.interests.clear()
+        for tag in form.interests_field.data:
+            tag_obj = session.query(Interest).filter(Interest.title == tag).first()
+            user.interests.append(tag_obj)
         session.commit()
         return redirect(f'/profile/{user_id}')
-    return render_template('settings.html', form=form)
+    return render_template('profile_settings.html', form=form)
 
 
 @login_required
@@ -362,4 +339,5 @@ def handle_404(error):
 
 if __name__ == '__main__':
     global_init('db/chats_db.sqlite')
+    app.register_blueprint(api_blueprint, url_prefix='/api')
     app.run('127.0.0.1', 8080, debug=True)

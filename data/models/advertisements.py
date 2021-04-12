@@ -2,11 +2,12 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, ForeignKey, DateTime, String
 from sqlalchemy.orm import relationship
+from sqlalchemy_serializer import SerializerMixin
 
 from data.db_session import SqlAlchemyBase
 
 
-class Advertisement(SqlAlchemyBase):
+class Advertisement(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'advertisements'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
