@@ -20,13 +20,7 @@ a {
     margin-bottom: 10px;
     padding: 10px;
 }
-.login {
-    margin-right: 10px;
-}
-.nekit {
-    color: blue;
-}
-.chats {
+.yellow {
     color: yellow;
 }
 .user_brand {
@@ -69,7 +63,7 @@ footer {
 textarea {
     width: 75%!important
 }
-.scroll-content {
+.scroll-interests {
     height: 100px;
     overflow: auto;
 }

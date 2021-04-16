@@ -10,7 +10,7 @@
         </div>
         <div class="normal_field float-end">
             {{ form.interests_field.label() }}
-            {{ form.interests_field(class="scroll-content border") }}
+            {{ form.interests_field(class="scroll-interests border") }}
         </div>
         <div>
             {% for field in form if field.name not in ['csrf_token', 'confirm_field', 'interests_field'] %}

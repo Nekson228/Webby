@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, abort
+from flask import Flask, render_template, redirect, url_for, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 
@@ -34,7 +34,7 @@ def info():
 
 @app.route('/api')
 def api():
-    return render_template('api.html')
+    return render_template('api_info.html')
 
 
 @app.route('/top')
@@ -84,7 +84,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route('/reset_password', methods=["POST", "GET"])
+@app.route('/login/reset_password', methods=["POST", "GET"])
 def reset_password():
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -145,7 +145,7 @@ def conversation(user_id):
         msg.content_id = cnt.id
         session.add(msg)
         session.commit()
-        return redirect(f"/conversation/{user_id}")
+        return redirect(f"/conversations/{user_id}")
     return render_template('chat.html', form=form, messages=messages, companion=companion)
 
 
@@ -242,7 +242,7 @@ def set_profile(user_id):
         user.birthday = form.birthday_field.data
         user.phone_number = form.phone_number_field.data
         user.interests.clear()
-        for tag in form.interests_field.data:
+        for tag in form.interests_field.raw_data:
             tag_obj = session.query(Interest).filter(Interest.title == tag).first()
             user.interests.append(tag_obj)
         session.commit()
@@ -293,18 +293,16 @@ def edit_advertisement(ad_id):
     form.tags_field.choices = [(i.title, i.title) for i in session.query(Interest).all()]
     form.tags_field.data = [tag.title for tag in advertisement.interests]
     if form.validate_on_submit():
-        cnt = Content()
+        cnt = advertisement.content
         cnt.content = form.content_field.data
-        session.add(cnt)
         session.commit()
         advertisement.title = form.title_field.data
         advertisement.author_id = current_user.id
         advertisement.price = form.price_field.data
         advertisement.content_id = cnt.id
         advertisement.interests.clear()
-        for tag in form.tags_field.data:
-            tag_obj = session.query(Interest).filter(Interest.title == tag).first()
-            advertisement.interests.append(tag_obj)
+        for tag in form.tags_field.raw_data:
+            advertisement.interests.append(session.query(Interest).filter(Interest.title == tag).first())
         session.commit()
         return redirect('/')
     return render_template('ad_form.html', form=form)

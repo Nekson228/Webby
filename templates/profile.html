@@ -33,7 +33,7 @@
             {% if user.id == current_user.id %}
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/{{ current_user.id }}/avatar">Сменить аватарку</a>
             {% else %}
-                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversation/{{ user.id }}#bottom">Написать сообщение</a>
+                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversations/{{ user.id }}#bottom">Написать сообщение</a>
             {% endif %}
         </div>
         <div>
@@ -51,7 +51,7 @@
                         <b class="fs-4">{{ ad.title }}</b>
                         {% if current_user == ad.author %}
                             <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
-                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger float-end">Удалить</a>
+                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>
                         {% endif %}
                     </div>
                     <p>{{ ad.content.content }}</p>

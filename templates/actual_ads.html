@@ -10,10 +10,13 @@
             <div class="p-2 border-top border-bottom">
                 <div class="clearfix">
                     <div>
-                        <b class="fs-4">{{ ad.title }}</b>
+                        <span>
+                            <b class="fs-4">{{ ad.title }}</b>
+                            <small class="text-secondary">#{{ ad.id }}</small>
+                        </span>
                         {% if current_user == ad.author %}
                             <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
-                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger float-end">Удалить</a>
+                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>
                         {% endif %}
                     </div>
                     <p>{{ ad.content.content }}</p>

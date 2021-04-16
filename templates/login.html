@@ -8,7 +8,7 @@
         {{ form.csrf_token }}
     </div>
     <div>
-        {% for field in form if field.name != 'csrf_token' and field.name != 'submit_field' %}
+        {% for field in form if field.name not in ['csrf_token', 'submit_field', 'remember_me'] %}
         <div>
             {{ field.label() }}
             <br>
@@ -20,10 +20,14 @@
             {% endif %}
         </div>
         {% endfor %}
+        <div>
+            {{ form.remember_me.label() }}
+            {{ form.remember_me }}
+        </div>
         <div class="message">{{ message_space.message }}</div>
         <div class="message">{{ message }}</div>
         <div>
-            <a class="text-danger" href="/reset_password">Забыли пароль?</a>
+            <a class="text-danger" href="/login/reset_password">Забыли пароль?</a>
         </div>
         <div>
             {{ form.submit_field(class="submit-button btn btn-outline-info") }}

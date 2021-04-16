@@ -8,6 +8,7 @@ from data.db_session import SqlAlchemyBase
 
 class Message(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'messages'
+    serialize_rules = ('-sender', '-receiver')
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     to_id = Column(Integer, ForeignKey("users.id"))

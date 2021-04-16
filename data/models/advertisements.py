@@ -9,6 +9,8 @@ from data.db_session import SqlAlchemyBase
 
 class Advertisement(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'advertisements'
+    serialize_rules = ('-author.email', '-author.rating', '-author.hashed_password', '-author.registration_time',
+                       '-author.admin', '-author.interests')
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String)
@@ -20,3 +22,6 @@ class Advertisement(SqlAlchemyBase, SerializerMixin):
     author = relationship('User', back_populates='advertisements')
     content = relationship('Content')
     interests = relationship('Interest', secondary='advertisements_to_interests', backref='advertisements')
+
+    def __repr__(self):
+        return f'<Advertisement> {self.id}: {self.title}'
