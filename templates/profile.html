@@ -36,6 +36,11 @@
                 <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversations/{{ user.id }}#bottom">Написать сообщение</a>
             {% endif %}
         </div>
+        {% if user.id != current_user.id and user.birthday.day == today.day and user.birthday.month == today.month %}
+            <div>
+                <p><b>У этого счастливчика сегодня день рождения!<br>Не поскупитесь на поздравления!</b></p>
+            </div>
+        {% endif %}
         <div>
             {% if user.id == current_user.id and not user.interests %}
                 <p>Ого! У Вас нет интересов! Настройте их!<br>(Если что, это в настройках профиля, рядом с именем, либо в выпадающем меню сверху)</p>

@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask, render_template, redirect, url_for, abort, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
@@ -40,7 +42,7 @@ def api():
 @app.route('/top')
 def top():
     session = create_session()
-    users = session.query(User).order_by(User.position).filter(User.position <= 100).all()
+    users = session.query(User).order_by(User.position).filter((User.position <= 100) & (User.rating > 0)).all()
     return render_template('top.html', top_users=users)
 
 
@@ -125,6 +127,8 @@ def conversation(user_id):
                 while to_rate >= i:
                     sender.rating += RATE[i]
                     to_rate -= i
+        sender.rating += (to_rate % 10) / 10
+        sender.rating = round(sender.rating, 1)
         session.commit()
         for i in reversed(RANKS.keys()):
             if sender.rating >= i:
@@ -194,7 +198,7 @@ def show_profile(user_id):
         profile_pic = url_for('static', filename=f"avatars/{pic.link}")
     else:
         profile_pic = url_for('static', filename='avatars/anon.png')
-    return render_template('profile.html', user=user, pic=profile_pic)
+    return render_template('profile.html', user=user, pic=profile_pic, today=datetime.datetime.now())
 
 
 @app.route('/profile/<int:user_id>/avatar', methods=['GET', 'POST'])
