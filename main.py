@@ -42,7 +42,7 @@ def api():
 @app.route('/top')
 def top():
     session = create_session()
-    users = session.query(User).order_by(User.position).filter((User.position <= 100) & (User.rating > 0)).all()
+    users = session.query(User).order_by(User.rating.desc()).filter(User.rating > 0).limit(100)
     return render_template('top.html', top_users=users)
 
 
@@ -136,12 +136,6 @@ def conversation(user_id):
                 sender.rank_id = rank.id
                 session.commit()
                 break
-        all_users = session.query(User).order_by(User.rating.desc())
-        count = 1
-        for i in all_users:
-            i.position = count
-            count += 1
-        session.commit()
         msg.to_id = user_id
         msg.from_id = current_user.id
         msg.content_id = cnt.id
@@ -193,12 +187,18 @@ def search():
 def show_profile(user_id):
     session = create_session()
     user = session.query(User).filter(User.id == user_id).first()
+    all_users = session.query(User).order_by(User.rating.desc())
+    position = 1
+    for i in all_users:
+        if i.id == user.id:
+            break
+        position += 1
     pic = session.query(Avatar).filter(Avatar.refers_to == user_id).first()
     if pic:
         profile_pic = url_for('static', filename=f"avatars/{pic.link}")
     else:
         profile_pic = url_for('static', filename='avatars/anon.png')
-    return render_template('profile.html', user=user, pic=profile_pic, today=datetime.datetime.now())
+    return render_template('profile.html', user=user, pic=profile_pic, today=datetime.datetime.now(), position=position)
 
 
 @app.route('/profile/<int:user_id>/avatar', methods=['GET', 'POST'])

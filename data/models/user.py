@@ -22,7 +22,6 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     registration_time = Column(DateTime, default=datetime.now)
     rating = Column(Integer, default=0)
     rank_id = Column(Integer, ForeignKey('ranks.id'))
-    position = Column(Integer)
     admin = Column(Boolean, default=0)
 
     advertisements = relationship('Advertisement', back_populates='author')

@@ -10,7 +10,7 @@
                 <div class="clearfix">
                     <a class="text-reset" href="/profile/{{ user.id }}">
                         <p>
-                            {{ user.position }} - <b>{{ user.name }} {{ user.surname }}</b> (<b>{{ user.rating }}</b>)
+                            {{ loop.index }} - <b>{{ user.name }} {{ user.surname }}</b> (<b>{{ user.rating }}</b>)
                         </p>
                     </a>
                 </div>
