@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, abort
+from flask import Flask, render_template, redirect, url_for, abort, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 
@@ -225,15 +225,16 @@ def change_avatar(user_id):
 @app.route('/profile/<int:user_id>/settings', methods=["GET", "POST"])
 @login_required
 def set_profile(user_id):
-    form = SetupProfileForm()
     session = create_session()
     user = session.query(User).filter(User.id == user_id).first()
+    form = SetupProfileForm()
     form.interests_field.choices = [(i.title, i.title) for i in session.query(Interest).all()]
-    form.interests_field.data = [tag.title for tag in user.interests]
-    form.name_field.data = user.name
-    form.surname_field.data = user.surname
-    form.birthday_field.data = user.birthday
-    form.phone_number_field.data = user.phone_number
+    if request.method == 'GET':
+        form.interests_field.data = [tag.title for tag in user.interests]
+        form.name_field.data = user.name
+        form.surname_field.data = user.surname
+        form.birthday_field.data = user.birthday
+        form.phone_number_field.data = user.phone_number
     if form.validate_on_submit():
         user.name = form.name_field.data
         user.surname = form.surname_field.data
@@ -285,11 +286,12 @@ def edit_advertisement(ad_id):
     if current_user != advertisement.author:
         return abort(403)
     form = AdvertisementForm()
-    form.title_field.data = advertisement.title
-    form.price_field.data = advertisement.price
-    form.content_field.data = advertisement.content.content
     form.tags_field.choices = [(i.title, i.title) for i in session.query(Interest).all()]
-    form.tags_field.data = [tag.title for tag in advertisement.interests]
+    if request.method == 'GET':
+        form.title_field.data = advertisement.title
+        form.price_field.data = advertisement.price
+        form.content_field.data = advertisement.content.content
+        form.tags_field.data = [tag.title for tag in advertisement.interests]
     if form.validate_on_submit():
         cnt = advertisement.content
         cnt.content = form.content_field.data
