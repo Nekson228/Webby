@@ -48,12 +48,6 @@ form {
 .submit-button {
     width: 100%;
 }
-.message-field {
-    background-color: lavender;
-    border-radius: 15px;
-    border-color: lavender;
-    outline: none
-}
 .fit-content {
     max-width: fit-content;
 }

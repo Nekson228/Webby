@@ -41,14 +41,19 @@
                 <p>Ого! У Вас нет интересов! Настройте их!<br>(Если что, это в настройках профиля, рядом с именем, либо в выпадающем меню сверху)</p>
             {% endif %}
         </div>
-                <div class="clearfix">
+        {% if user.advertisements %}
+        <div class="clearfix">
             <h2 class="float-right d-inline">Объяления пользователя</h2>
         </div>
+        {% endif %}
         {% for ad in user.advertisements %}
             <div class="p-2 border-top border-bottom">
                 <div class="clearfix">
                     <div>
-                        <b class="fs-4">{{ ad.title }}</b>
+                        <span>
+                            <b class="fs-4">{{ ad.title }}</b>
+                            <small class="text-secondary">#{{ ad.id }}</small>
+                        </span>
                         {% if current_user == ad.author %}
                             <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
                             <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>

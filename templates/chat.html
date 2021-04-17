@@ -38,9 +38,9 @@
             </div>
             {% endfor %}
         </div>
-        <div class="message_input_box">
-            {{ form.message_field(class="message-field w-75", placeholder="Напишите сообщение...") }}
-            {{ form.send_field() }}
+        <div class="border border-dark rounded clearfix">
+            {{ form.message_field(class="w-75 border-0 p-1 float-start", placeholder="Напишите сообщение...", style="outline: None", autocomplete="off") }}
+            {{ form.send_field(class="border-top-0 border-end-0 border-bottom-0 float-end p-1") }}
         </div>
     </div>
 </form>

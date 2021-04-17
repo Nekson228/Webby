@@ -55,7 +55,6 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         session = create_session()
-        users = session.query(User).order_by(User.rating.desc())
         user = User()
         user.name = form.name_field.data
         user.surname = form.surname_field.data
@@ -63,8 +62,7 @@ def register():
         user.email = form.email_field.data
         user.phone_number = form.phone_number_field.data
         user.set_password(form.password_field.data)
-        user.rank = RANKS[0]
-        user.position = users.count() + 1
+        user.rank = session.query(Rank).filter(Rank.id == 1).first()
         session.add(user)
         session.commit()
         return redirect('/')

@@ -2,8 +2,11 @@ from flask_wtf.file import FileRequired, FileAllowed
 from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField, FileField, SelectMultipleField, \
     widgets, IntegerField, TextAreaField
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from flask_wtf import FlaskForm
+
+from data.db_session import create_session
+from data.__all_models import *
 
 REQ_MESSAGE = 'Не все поля заполнены'
 PSW_LEN_MESSAGE = 'Пароль должен содеражть не менее 8 символов'
@@ -35,6 +38,16 @@ class RegistrationForm(FlaskForm):
     confirm_password_field = PasswordField('Подтвердите пароль: ',
                                            validators=[EqualTo('password_field', PSW_EQUAL_MESSAGE)])
     submit_field = SubmitField('Регистрация')
+
+    def validate_phone_number_field(self, field: StringField):
+        session = create_session()
+        if field.data in [phone[0] for phone in session.query(User.phone_number).all()]:
+            raise ValidationError('Пользователь с таким номером телефона уже существует')
+
+    def validate_email_field(self, field: EmailField):
+        session = create_session()
+        if field.data in [email[0] for email in session.query(User.email).all()]:
+            raise ValidationError('Пользователь с таким  адресом эл. почты уже существует')
 
 
 class SearchForm(FlaskForm):
