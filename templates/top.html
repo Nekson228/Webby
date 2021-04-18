@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% set ns = namespace(motivation=False) %}
     <form>
         <div class="clearfix">
             <h2 align="center">Ими гордится команда разработчиков</h2>
         </div>
         {% for user in top_users %}
-            <div class="p-2 border-top border-bottom">
+            {% if user.id == current_user.id %}
+                {% set ns.motivation = True %}
+            {% endif %}
+            <div class="p-2 border-top border-bottom" {% if loop.first %}style="background-color: gold;"{% elif loop.index == 2 %}style="background-color: silver;"{% elif loop.index == 3 %}style="background-color: #cd7f32;"{% endif %}>
                 <div class="clearfix">
                     <a class="text-reset" href="/profile/{{ user.id }}">
                         <p>
@@ -16,5 +20,8 @@
                 </div>
             </div>
         {% endfor %}
+        {% if not ns.motivation %}
+        <h4 align="center">Продвигайтесь по системе активностей и станьте в один ряд с легендами!</h4>
+        {% endif %}
     </form>
 {% endblock %}

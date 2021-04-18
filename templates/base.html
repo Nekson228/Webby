@@ -24,8 +24,19 @@
             </div>
         </div>
     {% else %}
-        <a class="btn btn-outline-dark float-end" href="/register">Зарегистрироваться</a>
-        <a class="btn btn-outline-dark me-2 float-end" href="/login">Войти</a>
+        <a class="btn btn-outline-dark float-end" href="/register">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+              <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+            </svg>
+            Зарегистрироваться
+        </a>
+        <a class="btn btn-outline-dark me-2 float-end" href="/login">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+              <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+            </svg>
+            Войти
+        </a>
     {% endif %}
     <div class="logo">
         <a href="/">
@@ -35,7 +46,7 @@
     </div>
 </div>
 {% if current_user.is_authenticated %}
-        <div class="d-flex flex-column p-3 bg-light" style="width: 280px; position: fixed;">
+        <div class="d-flex flex-column p-3 bg-white" style="width: 280px; position: fixed; border-radius: 0 10px 10px 0; margin-left: 0px;">
             <span class="fs-4">Быстрый доступ</span>
               <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -89,12 +100,12 @@
                 </li>
               </ul>
         </div>
-    {% endif %}
-<main role="main" class="container clearfix" style="padding-bottom: 108px;">
+{% endif %}
+<main role="main" class="container clearfix" {% if current_user.is_authenticated %}style="padding-left: 220px;"{% endif %}>
     {% block content %}{% endblock %}
 </main>
-<footer class="clearfix p-2 bg-light fixed-bottom">
-    <span class="fs-6 float-end"><b>Webby</b><br>Nekson & Пабло Сабля, 2021.</span>
+<footer class="clearfix p-2 bg-light">
+    <span class="fs-6 float-end mt-2"><b>Webby</b><br>Nekson & Пабло Сабля, 2021.</span>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">

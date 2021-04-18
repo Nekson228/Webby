@@ -22,10 +22,17 @@
             <div class="float-start w-50">
                 <h3>О пользователе:</h3>
                 <p>Номер телефона: <b>{{ user.phone_number }}</b></p>
-                <p>День рождения:<b>{{ user.birthday.strftime('%d.%m.%Y') }}</b></p>
+                <p>День рождения: <b>{{ user.birthday.strftime('%d.%m.%Y') }}</b></p>
                 <p>Дата регистрации: <b>{{ user.registration_time.strftime('%d.%m.%Y') }}</b></p>
                 <p>Баллы активности: <b>{{ user.rating }}</b> (<b>{{ user.rank.title }}</b>)</p>
-                <a class="text-reset" href="/top"><p>Место в рейтинге: <b>{{ position }}</b></p></a>
+                <a class="text-reset" href="/top">
+                    <p>
+                    Место в рейтинге: <b>{{ position }}</b>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-diamond-fill" viewBox="0 0 16 16">
+                      <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L4.047 3.339 8 7.293l3.954-3.954L9.049.435zm3.61 3.611L8.708 8l3.954 3.954 2.904-2.905c.58-.58.58-1.519 0-2.098l-2.904-2.905zm-.706 8.614L8 8.708l-3.954 3.954 2.905 2.904c.58.58 1.519.58 2.098 0l2.905-2.904zm-8.614-.706L7.292 8 3.339 4.046.435 6.951c-.58.58-.58 1.519 0 2.098l2.904 2.905z"/>
+                    </svg>
+                    </p>
+                </a>
                 {% if user.interests %}
                     <p>Интересы:
                         {% for i in user.interests %}
@@ -37,9 +44,20 @@
         </div>
         <div>
             {% if user.id == current_user.id %}
-                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/{{ current_user.id }}/avatar">Сменить аватарку</a>
+                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/profile/{{ current_user.id }}/avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                      <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg>
+                    Сменить аватарку
+                </a>
             {% else %}
-                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversations/{{ user.id }}#bottom">Написать сообщение</a>
+                <a class="btn btn-outline-dark w-25 rounded-bottom" href="/conversations/{{ user.id }}#bottom">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-text-fill" viewBox="0 0 16 16">
+                      <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
+                    </svg>
+                    Написать сообщение
+                </a>
             {% endif %}
         </div>
         {% if user.id != current_user.id and user.birthday.day == today.day and user.birthday.month == today.month %}
@@ -66,8 +84,19 @@
                             <small class="text-secondary">#{{ ad.id }}</small>
                         </span>
                         {% if current_user == ad.author %}
-                            <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
-                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>
+                            <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg>
+                                Изменить
+                            </a>
+                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293 6.854 8.146z"/>
+                                </svg>
+                                Удалить
+                            </a>
                         {% endif %}
                     </div>
                     <p>{{ ad.content.content }}</p>

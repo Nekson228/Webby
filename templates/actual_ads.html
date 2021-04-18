@@ -4,7 +4,13 @@
     <form>
         <div class="clearfix">
             <h2 class="float-right d-inline">Недавние объявления</h2>
-            <a href="/advertisements/create" class="btn btn-outline-success float-end">Создать объявление</a>
+            <a href="/advertisements/create" class="btn btn-outline-success float-end">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5V8z"/>
+                </svg>
+                Создать объявление
+            </a>
         </div>
         {% for ad in ads %}
             <div class="p-2 border-top border-bottom">
@@ -15,8 +21,19 @@
                             <small class="text-secondary">#{{ ad.id }}</small>
                         </span>
                         {% if current_user == ad.author %}
-                            <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
-                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>
+                            <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg>
+                                Изменить
+                            </a>
+                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293 6.854 8.146z"/>
+                                </svg>
+                                Удалить
+                            </a>
                         {% endif %}
                     </div>
                     <p>{{ ad.content.content }}</p>
