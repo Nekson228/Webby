@@ -45,13 +45,15 @@ def login():
     if not check_password_hash(user.hashed_password, auth_data.password):
         return jsonify({'message': 'Incorrect password'})
 
-    token = jwt.encode({'id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, SECRET_KEY)
+    token = jwt.encode({'id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)}, SECRET_KEY)
     return jsonify({'token': token.decode('UTF-8')})
 
 
 @api_blueprint.route('/users', methods=['GET'])
 @token_required
 def get_users(current_user: User):
+    if not current_user.admin:
+        abort(403)
     session = create_session()
     users = session.query(User).all()
     return jsonify({'users': [user.to_dict() for user in users]})
@@ -67,13 +69,15 @@ def get_exact_user(current_user: User, user_id):
     if current_user.admin or current_user.id == user_id:
         return jsonify({f'user{user_id}': user.to_dict()})
     return jsonify({f'user{user_id}': user.to_dict() if current_user.admin or current_user.id == user_id
-    else user.to_dict(rules=('-admin', '-hashed_password', '-email'))})
+                    else user.to_dict(rules=('-email',))})
 
 
 @api_blueprint.route('/users', methods=['POST'])
 @token_required
 def create_user(current_user: User):
     user_data = request.json
+    if not user_data:
+        abort(400)
     if not current_user.admin:
         abort(403)
     if not all((user_data.get('name'), user_data.get('surname'), user_data.get('birthday'), user_data.get('email'),
@@ -98,14 +102,12 @@ def create_user(current_user: User):
 @token_required
 def edit_user(current_user: User):
     user_data = request.json
+    if not user_data:
+        abort(400)
     if any([key not in ('name', 'surname', 'birthday', 'phone_number', 'interests') for key in user_data]):
         abort(400)
     session = create_session()
     user = session.query(User).filter(User.id == current_user.id).first()
-    if not user:
-        abort(404)
-    if user != current_user:
-        abort(403)
     user.name = user_data['name'] if user_data.get('name') else user.name
     user.surname = user_data['surname'] if user_data.get('surname') else user.surname
     user.birthday = datetime.datetime.fromisoformat(user_data['birthday']) \
@@ -136,16 +138,20 @@ def get_chat(current_user: User, user_id):
                                              ((Message.from_id == current_user.id) & (Message.to_id == user_id))).all()
     if not messages:
         abort(404)
-    return jsonify({f'messages_to_{user_id}': [message.to_dict() for message in messages]})
+    return jsonify({f'chat_with_{user_id}': [message.to_dict() for message in messages]})
 
 
 @api_blueprint.route('/messages/<int:user_id>', methods=['POST'])
 @token_required
 def post_message(current_user: User, user_id):
+    if not request.json:
+        abort(400)
     msg_content = request.json.get('content')
     if not msg_content:
         abort(400)
     session = create_session()
+    if user_id not in [i[0] for i in session.query(User.id).all()]:
+        abort(404)
     cnt = Content()
     cnt.content = msg_content
     session.add(cnt)
@@ -182,6 +188,8 @@ def get_users_ads(current_user: User, user_id):
 @token_required
 def create_ad(current_user: User):
     ad_data = request.json
+    if not ad_data:
+        abort(400)
     if not all((ad_data.get('title'), ad_data.get('price'), ad_data.get('content'))):
         abort(400)
     content = Content()
@@ -214,6 +222,8 @@ def create_ad(current_user: User):
 @token_required
 def edit_ad(current_user: User, ad_id):
     ad_data = request.json
+    if not ad_data:
+        abort(400)
     if any([key not in ('title', 'content', 'price', 'interests') for key in ad_data]):
         abort(400)
     session = create_session()

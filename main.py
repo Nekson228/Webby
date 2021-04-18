@@ -1,3 +1,4 @@
+from flask import Flask, render_template, redirect, url_for, abort, request, make_response
 import datetime
 
 from flask import Flask, render_template, redirect, url_for, abort, request
@@ -37,6 +38,11 @@ def info():
 @app.route('/api')
 def api():
     return render_template('api_info.html')
+
+
+@app.route('/api/docs')
+def api_docs():
+    return render_template('api_docs.html')
 
 
 @app.route('/top')
@@ -107,14 +113,16 @@ def logout():
     return redirect('/')
 
 
-@app.route('/conversations/<int:user_id>', methods=['POST', 'GET'])
+@app.route('/chats/<int:user_id>', methods=['POST', 'GET'])
 @login_required
-def conversation(user_id):
+def chat(user_id):
     form = MessageForm()
     session = create_session()
-    messages = session.query(Message).filter(((Message.to_id == current_user.id) & (Message.from_id == user_id)) |
-                                             ((Message.from_id == current_user.id) & (Message.to_id == user_id)))
     companion = session.query(User).filter(User.id == user_id).first()
+    if not companion:
+        return abort(404)
+    messages = session.query(Message).filter(((Message.to_id == current_user.id) & (Message.from_id == user_id)) |
+                                             ((Message.from_id == current_user.id) & (Message.to_id == user_id))).all()
     sender = session.query(User).filter(User.id == current_user.id).first()
     if form.validate_on_submit():
         msg, cnt = Message(), Content()
@@ -141,13 +149,13 @@ def conversation(user_id):
         msg.content_id = cnt.id
         session.add(msg)
         session.commit()
-        return redirect(f"/conversations/{user_id}")
-    return render_template('chat.html', form=form, messages=messages, companion=companion)
+        return redirect(f"/chats/{user_id}")
+    return render_template('chats.html', form=form, messages=messages, companion=companion)
 
 
-@app.route('/conversations', methods=['GET', 'POST'])
+@app.route('/chats', methods=['GET', 'POST'])
 @login_required
-def conversations():
+def chats():
     from itertools import groupby
 
     session = create_session()
@@ -162,9 +170,9 @@ def conversations():
                                                             (Message.from_id == user.id)) |
                                                            ((Message.from_id == current_user.id) &
                                                             (Message.to_id == user.id))).all()[-1])
-    conversations_list = sorted([[companions[i], last_messages[i]] for i in range(len(companions))],
-                                key=lambda x: x[1].created_at)[::-1]
-    return render_template('conversations.html', conversations_list=conversations_list)
+    chats_list = sorted([[companions[i], last_messages[i]] for i in range(len(companions))],
+                        key=lambda x: x[1].created_at)[::-1]
+    return render_template('chats_list.html', chats_list=chats_list)
 
 
 @app.route('/search', methods=["GET", "POST"])
@@ -326,6 +334,11 @@ def delete_advertisement(ad_id):
     return redirect('/')
 
 
+@app.errorhandler(401)
+def handle_401(error):
+    return redirect('/login')
+
+
 @app.errorhandler(403)
 def handle_403(error):
     return render_template('errorhandler.html', error='Ошибка 403.', http_error=error,
@@ -334,14 +347,18 @@ def handle_403(error):
 
 @app.errorhandler(404)
 def handle_404(error):
-    return render_template('errorhandler.html', error='Ошибка 404.', http_error=error,
-                           message='Похоже вы попытались получить доступ к чему-то не существующему. '
-                                   'Возможно, вы не вошли в свой аккаунт.')
+    response = make_response(render_template('errorhandler.html', error='Ошибка 404.', http_error=error,
+                                             message='Похоже вы попытались получить доступ к чему-то не существующему. '
+                                                     'Возможно, вы не вошли в свой аккаунт.'),
+                             {'error': f'{error.code} {error.name}: {error.description}'})
+    response.status = 'Not Found'
+    response.status_code = 404
+    return response
 
 
-@app.errorhandler(401)
-def handle_401(error):
-    return redirect('/login')
+@app.errorhandler(405)
+def handle_405(error):
+    return make_response({'error': error}, 405)
 
 
 if __name__ == '__main__':

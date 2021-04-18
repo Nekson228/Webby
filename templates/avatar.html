@@ -10,16 +10,16 @@
         </div>
         <div class="message_input_box">
             {% for field in form if field.name != 'csrf_token' and field.name != 'confirm_field'%}
-                <div>
-                    {{ field.label() }}
-                    <br>
-                    {% if field.errors %}
-                        {{ field(class="error_field") }}
-                        {% set message_space.message = field.errors[0] %}
-                    {% else %}
-                        {{ field(class="normal_field") }}
-                    {% endif %}
-                </div>
+            <div>
+                {{ field.label() }}
+                <br>
+                {% if field.errors %}
+                {{ field(class="error_field") }}
+                {% set message_space.message = field.errors[0] %}
+                {% else %}
+                {{ field(class="normal_field") }}
+                {% endif %}
+            </div>
             {% endfor %}
         </div>
         <div class="message">{{ message_space.message }}</div>

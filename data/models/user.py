@@ -10,7 +10,7 @@ from data.db_session import SqlAlchemyBase
 
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
-    serialize_rules = ('-advertisements',)
+    serialize_rules = ('-advertisements', '-rank_id', '-admin', '-hashed_password')
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(Unicode)
