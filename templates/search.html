@@ -1,33 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form method="post" novalidate>
-        <div>
-            {{ form.csrf_token }}
-        </div>
-        <div class="number_input_box">
-            <p>Введите номер телефона, имя или фамилию пользователя</p>
-            {{ form.filter_field() }}
-            {{ form.search_field() }}
-        </div>
-        {% if users is defined %}
-            <div class="found_user">
-                <p>Результаты поиска:</p>
-                {% for user in users %}
-                    <div class="dropdown">
-                        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ user.name }} {{ user.surname }} ({{ user.phone_number }})
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/profile/{{ user.id }}">Профиль</a>
-                            <a class="dropdown-item" href="/conversations/{{ user.id }}#bottom">Перейти к разговору</a>
-                        </div>
-                    </div>
-                {% endfor %}
+<form method="post" novalidate>
+    <div>
+        {{ form.csrf_token }}
+    </div>
+    <div class="number_input_box">
+        <p>Введите номер телефона, имя или фамилию пользователя</p>
+        {{ form.filter_field() }}
+        {{ form.search_field() }}
+    </div>
+    {% if users is defined %}
+    <div class="found_user">
+        <p>Результаты поиска:</p>
+        {% for user in users %}
+        <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ user.name }} {{ user.surname }} ({{ user.phone_number }})
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/profile/{{ user.id }}">Профиль</a>
+                <a class="dropdown-item" href="/chats/{{ user.id }}#bottom">Перейти к разговору</a>
             </div>
-        {% endif %}
-        {% if message is defined %}
-            <div class="message">{{ message }}</div>
-        {% endif %}
-    </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if message is defined %}
+    <div class="message">{{ message }}</div>
+    {% endif %}
+</form>
 {% endblock %}

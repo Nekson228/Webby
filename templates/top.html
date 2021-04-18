@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form>
+<form>
+    <div class="clearfix">
+        <h2 align="center">Ими гордится команда разработчиков</h2>
+    </div>
+    {% for user in top_users %}
+    <div class="p-2 border-top border-bottom">
         <div class="clearfix">
-            <h2 align="center">Ими гордится команда разработчиков</h2>
+            <a class="text-reset" href="/profile/{{ user.id }}">
+                <p>
+                    {{ user.position }} - <b>{{ user.name }} {{ user.surname }}</b> (<b>{{ user.rating }}</b>)
+                </p>
+            </a>
         </div>
-        {% for user in top_users %}
-            <div class="p-2 border-top border-bottom">
-                <div class="clearfix">
-                    <a class="text-reset" href="/profile/{{ user.id }}">
-                        <p>
-                            {{ user.position }} - <b>{{ user.name }} {{ user.surname }}</b> (<b>{{ user.rating }}</b>)
-                        </p>
-                    </a>
-                </div>
-            </div>
-        {% endfor %}
-    </form>
+    </div>
+    {% endfor %}
+</form>
 {% endblock %}

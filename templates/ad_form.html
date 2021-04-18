@@ -12,10 +12,10 @@
             {{ field.label() }}
             <br>
             {% if field.errors %}
-                {{ field(class="error_field") }}
-                {% set message_space.message = field.errors[0] %}
+            {{ field(class="error_field") }}
+            {% set message_space.message = field.errors[0] %}
             {% else %}
-                {{ field(class="normal_field") }}
+            {{ field(class="normal_field") }}
             {% endif %}
         </div>
         {% endfor %}

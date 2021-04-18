@@ -1,5 +1,6 @@
 body {
     background-color: aliceblue !important;
+    position: relative;
 }
 .logo {
     text-align: center;

@@ -1,31 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form>
+<form>
+    <div class="clearfix">
+        <h2 class="float-right d-inline">Недавние объявления</h2>
+        <a href="/advertisements/create" class="btn btn-outline-success float-end">Создать объявление</a>
+    </div>
+    {% for ad in ads %}
+    <div class="p-2 border-top border-bottom">
         <div class="clearfix">
-            <h2 class="float-right d-inline">Недавние объявления</h2>
-            <a href="/advertisements/create" class="btn btn-outline-success float-end">Создать объявление</a>
-        </div>
-        {% for ad in ads %}
-            <div class="p-2 border-top border-bottom">
-                <div class="clearfix">
-                    <div>
+            <div>
                         <span>
                             <b class="fs-4">{{ ad.title }}</b>
                             <small class="text-secondary">#{{ ad.id }}</small>
                         </span>
-                        {% if current_user == ad.author %}
-                            <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
-                            <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>
-                        {% endif %}
-                    </div>
-                    <p>{{ ad.content.content }}</p>
-                    <b>{{ ad.price }} рублей</b>
-                    <div class="float-end">
-                        <a href="/profile/{{ ad.author.id }}" class="text-reset"><b>{{ ad.author.name }} {{ ad.author.surname }}</b></a>
-                    </div>
-                </div>
+                {% if current_user == ad.author %}
+                <a href="/advertisements/{{ ad.id }}/edit" class="btn btn-outline-warning float-end">Изменить</a>
+                <a href="/advertisements/{{ ad.id }}/delete" class="btn btn-outline-danger me-2 float-end">Удалить</a>
+                {% endif %}
             </div>
-        {% endfor %}
-    </form>
+            <p>{{ ad.content.content }}</p>
+            <b>{{ ad.price }} рублей</b>
+            <div class="float-end">
+                <a href="/profile/{{ ad.author.id }}" class="text-reset"><b>{{ ad.author.name }} {{ ad.author.surname
+                    }}</b></a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</form>
 {% endblock %}
