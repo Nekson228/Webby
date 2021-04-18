@@ -6,8 +6,8 @@
         <div class="clearfix border-bottom">
             <h3 class="float-start">{{ user.name }} {{ user.surname }}</h3>
             {% if user.id == current_user.id %}
-                <a class="float-start" href="/profile/{{ current_user.id }}/settings">
-                    <div class="align-middle">
+                <a class="float-start link-dark" href="/profile/{{ current_user.id }}/settings">
+                    <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                               class="bi bi-gear-fill"
                               viewBox="0 0 16 16">
@@ -22,8 +22,8 @@
             <div class="float-start w-50">
                 <h3>О пользователе:</h3>
                 <p>Номер телефона: <b>{{ user.phone_number }}</b></p>
-                <p>День рождения: <b>{{ user.birthday.day }}.{{ user.birthday.month }}.{{ user.birthday.year }}</b></p>
-                <p>Дата регистрации: <b>{{ user.registration_time.day }}.{{ user.registration_time.month }}.{{ user.registration_time.year }}</b></p>
+                <p>День рождения:<b>{{ user.birthday.strftime('%d.%m.%Y') }}</b></p>
+                <p>Дата регистрации: <b>{{ user.registration_time.strftime('%d.%m.%Y') }}</b></p>
                 <p>Баллы активности: <b>{{ user.rating }}</b> (<b>{{ user.rank.title }}</b>)</p>
                 <a class="text-reset" href="/top"><p>Место в рейтинге: <b>{{ position }}</b></p></a>
                 {% if user.interests %}
@@ -54,7 +54,7 @@
         </div>
         {% if user.advertisements %}
         <div class="clearfix">
-            <h2 class="float-right d-inline">Объяления пользователя</h2>
+            <h2 class="float-right d-inline">Объявления пользователя</h2>
         </div>
         {% endif %}
         {% for ad in user.advertisements %}
@@ -71,7 +71,7 @@
                         {% endif %}
                     </div>
                     <p>{{ ad.content.content }}</p>
-                    <b>{{ ad.price }} рублей</b>
+                    <b>{{ ad.price }} ₽</b>
                     <div class="float-end">
                         <a href="/profile/{{ ad.author.id }}" class="text-reset"><b>{{ ad.author.name }} {{ ad.author.surname }}</b></a>
                     </div>

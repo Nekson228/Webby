@@ -43,6 +43,13 @@
     </div>
     </div>
     <div class="message">{{ message_space.message }}</div>
-    {{ form.submit_field(class="submit-button btn btn-outline-info") }}
+    <div>
+        {{ form.submit_field(class="submit-button btn btn-outline-info") }}
+    </div>
+    <div>
+        <a class="submit-button btn btn-outline-warning" href="/login">
+        У меня уже есть аккаунт
+        </a>
+    </div>
 </form>
 {% endblock %}

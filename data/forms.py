@@ -1,7 +1,7 @@
 from flask_wtf.file import FileRequired, FileAllowed
-from wtforms import PasswordField, BooleanField, SubmitField, StringField, DateField, FileField, SelectMultipleField, \
+from wtforms import PasswordField, BooleanField, SubmitField, StringField, FileField, SelectMultipleField, \
     widgets, IntegerField, TextAreaField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields.html5 import EmailField, DateField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from flask_wtf import FlaskForm
 
@@ -29,7 +29,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     name_field = StringField('Имя:', validators=[DataRequired(REQ_MESSAGE)])
     surname_field = StringField('Фамилия:', validators=[DataRequired(REQ_MESSAGE)])
-    birthday_field = DateField('Дата рождения (ГГГГ-ММ-ДД):', validators=[DataRequired(REQ_MESSAGE)])
+    birthday_field = DateField('Дата рождения:', validators=[DataRequired(REQ_MESSAGE)])
     phone_number_field = StringField('Номер телефона: ', validators=[DataRequired(REQ_MESSAGE)])
     email_field = EmailField('Email адрес:', validators=[DataRequired(REQ_MESSAGE)])
     password_field = PasswordField('Пароль: ',
@@ -90,7 +90,7 @@ class ResetPasswordForm(FlaskForm):
 
 class AdvertisementForm(FlaskForm):
     title_field = StringField('Название объявления: ', validators=[DataRequired(REQ_MESSAGE)])
-    price_field = IntegerField('Цена товара/услуги: ', validators=[DataRequired(REQ_MESSAGE)])
+    price_field = IntegerField('Цена товара/услуги (в рублях): ', validators=[DataRequired(REQ_MESSAGE)])
     content_field = TextAreaField('Опишите товар/услугу: ', validators=[DataRequired(REQ_MESSAGE)],
                                   render_kw={'class': 'w-75'})
     tags_field = MultiCheckboxField('Тэги: ', choices=[('foo', 'bar'), ('cout', 'pep')])

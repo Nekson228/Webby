@@ -339,6 +339,11 @@ def handle_404(error):
                                    'Возможно, вы не вошли в свой аккаунт.')
 
 
+@app.errorhandler(401)
+def handle_401(error):
+    return redirect('/login')
+
+
 if __name__ == '__main__':
     global_init('db/chats_db.sqlite')
     app.register_blueprint(api_blueprint, url_prefix='/api')
