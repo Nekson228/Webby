@@ -24,7 +24,7 @@ login_manager.init_app(app)
 @app.route('/')
 def index():
     if not current_user.is_authenticated:
-        return redirect('/info')
+        return render_template('roadmap.html')
     session = create_session()
     advertisements = session.query(Advertisement).all()[::-1][:6]
     return render_template('actual_ads.html', ads=advertisements)
@@ -32,7 +32,7 @@ def index():
 
 @app.route('/info')
 def info():
-    return render_template('roadmap.html')
+    return render_template('about.html')
 
 
 @app.route('/api')
