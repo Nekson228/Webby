@@ -5,8 +5,9 @@ from data.db_session import SqlAlchemyBase
 
 
 class Content(SqlAlchemyBase, SerializerMixin):
-    __tablename__ = 'contents'
-    serialize_rules = ('-id',)
+    """Класс модели контента."""
+    __tablename__ = 'contents'  # название таблицы с моделью в базе данных
+    serialize_rules = ('-id',)  # правила преобразования объекта модели в json
 
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    content = Column(Text)
+    id = Column(Integer, autoincrement=True, primary_key=True)  # id контента
+    content = Column(Text)  # контент

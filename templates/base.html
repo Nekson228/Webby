@@ -101,7 +101,7 @@
               </ul>
         </div>
 {% endif %}
-<main role="main" class="container clearfix" {% if current_user.is_authenticated %}style="padding-left: 220px;"{% endif %}>
+<main role="main" class="container clearfix" {% if current_user.is_authenticated %} style="padding-left: 220px;"{% endif %}>
     {% block content %}{% endblock %}
 </main>
 <footer class="clearfix p-2 bg-light">

@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../VK Bot/.idea/VK Bot.iml" filepath="$PROJECT_DIR$/../VK Bot/.idea/VK Bot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../WEB 4/.idea/WEB 4.iml" filepath="$PROJECT_DIR$/../WEB 4/.idea/WEB 4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../WEB 5/.idea/WEB 5.iml" filepath="$PROJECT_DIR$/../WEB 5/.idea/WEB 5.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/WEB Project.iml" filepath="$PROJECT_DIR$/.idea/WEB Project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../flask-wtf/.idea/flask-wtf.iml" filepath="$PROJECT_DIR$/../flask-wtf/.idea/flask-wtf.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../sqlalchemy-practice/.idea/sqlalchemy-practice.iml" filepath="$PROJECT_DIR$/../sqlalchemy-practice/.idea/sqlalchemy-practice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../КР/.idea/КР.iml" filepath="$PROJECT_DIR$/../КР/.idea/КР.iml" />
     </modules>
   </component>
 </project>

@@ -8,19 +8,20 @@ ad_table = Table(
     SqlAlchemyBase.metadata,
     Column('advertisements', Integer, ForeignKey('advertisements.id')),
     Column('interests', Integer, ForeignKey('interests.id'))
-)
+)  # промежуточная таблица для отношения объявлений к интересам
 
 user_table = Table(
     'users_to_interests',
     SqlAlchemyBase.metadata,
     Column('users', Integer, ForeignKey('users.id')),
     Column('interests', Integer, ForeignKey('interests.id'))
-)
+)  # промежуточная таблица для отношения пользователей к интересам
 
 
 class Interest(SqlAlchemyBase, SerializerMixin):
-    __tablename__ = 'interests'
-    serialize_rules = ('-advertisements', '-users')
+    """Класс модели интереса."""
+    __tablename__ = 'interests'  # название таблицы с моделью в базе данных
+    serialize_rules = ('-advertisements', '-users')  # правила преобразования объекта модели в json
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(Unicode, nullable=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)  # id интереса
+    title = Column(Unicode, nullable=True)  # название интереса
