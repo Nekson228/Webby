@@ -9,11 +9,14 @@ from api import api_blueprint
 from data.__all_models import *
 from data.constants import *
 from data.db_session import create_session, global_init
-from data.forms import *
+from data.forms import LoginForm, RegistrationForm, AdvertisementForm, MessageForm, AvatarForm, ResetPasswordForm, \
+    SetupProfileForm, SearchForm
 
+# создаем приложение
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
+# создаем менеджер авторизации
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -447,6 +450,6 @@ def handle_405(error):
 
 
 if __name__ == '__main__':
-    global_init('db/chats_db.sqlite')
-    app.register_blueprint(api_blueprint, url_prefix='/api')
-    app.run('127.0.0.1', 8080, debug=True)
+    global_init('db/chats_db.sqlite')  # инициализируем базу данных
+    app.register_blueprint(api_blueprint, url_prefix='/api')  # загружаем обработчики API
+    app.run('127.0.0.1', 8080, debug=True)  # запускаем приложение
