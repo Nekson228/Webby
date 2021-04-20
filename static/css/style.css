@@ -76,3 +76,7 @@ footer {
 main {
     padding-bottom: 120px
 }
+.message_box {
+    overflow-y: auto;
+    max-height: 700px
+}

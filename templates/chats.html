@@ -11,7 +11,7 @@
                 <a href="/profile/{{ companion.id }}" class="text-reset">{{ companion.name }} {{ companion.surname }}</a>
             </h3>
         </div>
-        <div>
+        <div class="message_box">
             {% for msg in messages %}
             <div id="{% if loop.last %}bottom{% endif %}">
                 {% if loop.previtem is defined %}
