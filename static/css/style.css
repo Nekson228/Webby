@@ -72,6 +72,7 @@ footer {
 .wrapper {
   position: relative;
   min-height: 100%;
+  margin: 0!important
 }
 main {
     padding-bottom: 120px
