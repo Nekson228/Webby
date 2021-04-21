@@ -87,9 +87,8 @@ def get_exact_user(current_user: User, user_id):
         # если это так - возвращаем все данные
         return jsonify({f'user{user_id}': user.to_dict()})
     # в противном случае - убираем персональные данные из ответа
-    return jsonify({f'user{user_id}':
-                        user.to_dict() if current_user.admin or current_user.id == user_id
-                        else user.to_dict(rules=('-email',))})
+    return jsonify({f'user{user_id}': user.to_dict() if current_user.admin or current_user.id == user_id
+                    else user.to_dict(rules=('-email',))})
 
 
 @api_blueprint.route('/users', methods=['POST'])
