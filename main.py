@@ -12,6 +12,8 @@ from data.db_session import create_session, global_init
 from data.forms import LoginForm, RegistrationForm, AdvertisementForm, MessageForm, AvatarForm, ResetPasswordForm, \
     SetupProfileForm, SearchForm
 
+"""Webby v1.0"""
+
 # создаем приложение
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
