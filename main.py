@@ -454,4 +454,4 @@ def handle_405(error):
 if __name__ == '__main__':
     global_init('db/chats_db.sqlite')  # инициализируем базу данных
     app.register_blueprint(api_blueprint, url_prefix='/api')  # загружаем обработчики API
-    app.run('0.0.0.0', int(os.environ.get("PORT", 5000)))  # запускаем приложение
+    app.run('127.0.0.1', 8080)  # запускаем приложение
