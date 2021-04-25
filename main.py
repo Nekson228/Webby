@@ -17,6 +17,7 @@ from data.forms import LoginForm, RegistrationForm, AdvertisementForm, MessageFo
 # создаем приложение
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
+app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='img/favicon.ico'))
 
 # создаем менеджер авторизации
 login_manager = LoginManager()
