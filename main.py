@@ -1,7 +1,7 @@
 import datetime
 import os
 
-from flask import Flask, render_template, redirect, url_for, abort, request, make_response
+from flask import Flask, render_template, redirect, url_for, abort, request, make_response, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 
@@ -17,11 +17,17 @@ from data.forms import LoginForm, RegistrationForm, AdvertisementForm, MessageFo
 # создаем приложение
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
-app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='img/favicon.ico'))
 
 # создаем менеджер авторизации
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    """Обработчик иконки страницы"""
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'img/favicon.ico',
+                               mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/')
