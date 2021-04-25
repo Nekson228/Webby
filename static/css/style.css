@@ -75,7 +75,9 @@ footer {
   margin: 0!important
 }
 main {
-    padding-bottom: 120px
+    padding-bottom: 120px;
+    padding-right: 100px!important;
+    margin-left: 250px!important
 }
 .message_box {
     overflow-y: auto;
