@@ -1,2 +1,2 @@
 web: gunicorn --bind 0.0.0.0:$PORT main:app
-release: python src/manage.py migrate
+release: python data/db_session.py migrate
