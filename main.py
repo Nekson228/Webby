@@ -23,7 +23,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.environ['DATABASE_URL']
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
@@ -464,6 +464,6 @@ def handle_405(error):
 
 
 if __name__ == '__main__':
-    global_init('db/chats_db.sqlite')  # инициализируем базу данных
+    global_init()  # инициализируем базу данных
     app.register_blueprint(api_blueprint, url_prefix='/api')  # загружаем обработчики API
     app.run()
