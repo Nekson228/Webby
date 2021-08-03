@@ -1,5 +1,6 @@
 import datetime
 import os
+import psycopg2
 
 from flask import Flask, render_template, redirect, url_for, abort, request, make_response, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -21,6 +22,10 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # создаем менеджер авторизации
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+DATABASE_URL = os.getenv('DATABASE_URL')
+
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 
 @app.route('/favicon.ico')
